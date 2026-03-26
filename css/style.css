@@ -1405,7 +1405,7 @@ spline-viewer {
     max-width: 30vw;
     font-size: 10px;
     opacity: 0.5;
-    margin-top:  auto;
+    align-self: end;
     font-weight:  300;
   }
   
