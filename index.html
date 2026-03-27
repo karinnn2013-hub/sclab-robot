@@ -14,12 +14,17 @@
 
         <!-- 左：logo -->
         <div class="nav-left">
-            <img src="./assets/logo.svg" alt="logo">
+           <a href="./index.html">
+            <img  src="./assets/logo.svg" alt="logo">
+           </a> 
         </div>
     
         <!-- 中：实验室名称 -->
         <div class="nav-center">
-            <img src="./assets/lab-name.svg" alt="Smart City Lab">
+            <a href="./index.html">
+                <img src="./assets/lab-name.svg" alt="Smart City Lab">
+               </a> 
+          
         </div>
     
         <!-- 右：导航 -->
@@ -27,6 +32,11 @@
             <a href="./index.html">Home</a>
         </div>
     
+    </nav>
+
+    <nav class="nav-mobile">
+        <a><img src="./assets/logo.svg" class="logo-left"></a>
+        <a> <img src="./assets/mobilelogo2.svg" class="logo-right"></a>
     </nav>
 
     <body class="preload">
@@ -41,10 +51,21 @@
             
 
             <div id="spline-layer">
-                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.68/build/spline-viewer.js"></script>
-                <spline-viewer url="https://prod.spline.design/VxylDYgy5NiSa3YW/scene.splinecode"></spline-viewer>
+                <div id="spline-desktop"> 
+                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.68/build/spline-viewer.js"></script>
+                    <spline-viewer url="https://prod.spline.design/VxylDYgy5NiSa3YW/scene.splinecode"></spline-viewer>
+                </div>
+               
+                <div id="spline-mobile">
+                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.72/build/spline-viewer.js"></script>
+                    <spline-viewer url="https://prod.spline.design/wLHJC3xseFznaSC7/scene.splinecode"></spline-viewer>
+                </div>
+                
                 <div class="splineafter"></div>
             </div>
+
+         
+
 
         
             <!-- title -->

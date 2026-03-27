@@ -498,19 +498,17 @@ function animateDot(path, dot) {
 }
 
 
-const footer = document.querySelector(".footer");
+let lastScrollY = window.scrollY;
+const footer = document.querySelector('.footer');
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      footer.style.opacity = 1;
-      footer.style.transform = "translateY(0)";
-    }
-  });
+window.addEventListener('scroll', () => {
+  const current = window.scrollY;
+
+  if (current > lastScrollY) {
+    footer.style.transform = "translateY(100%)";
+  } else {
+    footer.style.transform = "translateY(0)";
+  }
+
+  lastScrollY = current;
 });
-
-footer.style.opacity = 0;
-footer.style.transform = "translateY(40px)";
-footer.style.transition = "1s ease";
-
-observer.observe(footer);

@@ -32,7 +32,7 @@ body::before {
 }
   
 
-  section{
+section{
     background: black;
   }
 
@@ -1323,8 +1323,33 @@ spline-viewer {
     font-family: 'Inter', sans-serif;
     letter-spacing: 0px;
     padding-bottom: 5px;
+    padding-top: 4vh;
   }
 
+
+  
+  .footer {
+    position: relative;
+  
+    --y: 0;
+  
+    transform: translateY(var(--y)) translateZ(0);
+  
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.6s ease;
+  
+    will-change: transform, opacity;
+  }
+  
+  /* 👇 默认是显示的 */
+  .footer.show {
+    opacity: 1;
+  }
+  
+  /* 👇 往下滑时隐藏（slip up） */
+  .footer.hide {
+    opacity: 0;
+  }
 
   
   /* 标题 */
@@ -1339,8 +1364,14 @@ spline-viewer {
   /* 内容 */
   .footer-block p {
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 0.9;
     opacity: 0.7;
+
+  }
+
+  .text-container p{
+    margin-block-start: 0.3em;
+    margin-block-end: 0.3em;
   }
   
 
@@ -1376,9 +1407,9 @@ spline-viewer {
 .footer-logo{
     grid-column: 1 / span 1;
     grid-row: 1 / span 1;
-    width: 30vw;
     display: flex;
     flex-direction: row;
+
 }
 
 .team{
@@ -1388,6 +1419,8 @@ spline-viewer {
     display: flex;
     flex-direction: column;
     font-weight: 300;
+    margin-top: 0;
+
 }
 
 .contact{
@@ -1417,12 +1450,14 @@ spline-viewer {
     color:#ffffffb5 ;
     margin-right: 10px;
     line-height: 12px;
+
   }
 
 .logo2{
     position: absolute;
     top: 0;
     left:0;
+    margin-right: 30vw;
 }
 
 .text-container{
@@ -1438,3 +1473,520 @@ spline-viewer {
     color:#ffffffb5 ;
     margin-left: auto;
   }
+
+  .footer {
+    position: relative;
+    transform: translateZ(0); /* Safari fix */
+  }
+  
+  .footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+  
+  
+    width: 100%;
+    height: 1px;
+  
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.428),
+      transparent
+    );
+  
+    transform: translateX(-100%) translateZ(0);
+    will-change: transform;
+  
+    animation: scan 5s linear infinite;
+  }
+  
+  @keyframes scan {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+
+
+
+  #spline-mobile {
+    display: none;
+  }
+  .nav-mobile {
+    display: none;
+  }
+
+  
+
+
+  /* mobile */
+  @media (max-width: 450px) {
+
+    .cursor {
+      display: none !important;
+    }
+
+   /* none show */
+    #spline-desktop {
+      display: none;
+    }
+    
+    .nav{
+      display: none;
+    }
+
+    .custom-cursor{
+      display: none;
+    }
+
+
+   /* none show */
+
+      body{
+        padding-left: 2vw;
+        padding-right: 2vw;
+      }
+
+
+
+     /* spline layer */
+    #spline-mobile {
+      display: block;
+      position:  sticky;   /* 关键！ */
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;   /* 在背景 */
+       overflow: hidden;
+
+    }
+
+
+    .nav-mobile {
+      position: fixed;
+      top: 5vh;              /* 👉 顶部 10% 空间 */
+      left: 0;
+      width: 90vw;
+    
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    
+      padding: 0 20px;
+      z-index: 1000;
+    }
+
+    .nav-mobile img {
+      height: 25px;   /* 根据你设计调 */
+      object-fit: contain;
+    }
+
+
+    .hero{
+      min-height:100vh;
+      position: relative;
+    }
+       
+    .hero-title{
+      margin-top: 20vh;
+      padding-left: 10px;
+      padding-right: 10px;
+
+    }
+    
+    
+    
+    
+    .title-main {
+      height: 5vh;
+    }
+    
+    
+    .title-maincn {
+      height: 2vh;
+      margin-top: -0.1fr;
+    }
+    
+    
+    
+    .hero-title2{
+      
+      padding-left: 10px;
+      padding-right: 10px;
+      opacity: 1;
+      z-index: 30;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      top: 100%;
+    
+    
+    }
+    
+    .title-main2 {
+      height: 5vh;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.5))
+      drop-shadow(0 0 20px rgba(255,255,255,0.3));
+      clip-path: inset(0 0 0 0);
+      margin-bottom:20px;
+    }
+    
+    .title-maincn2 {
+      height: 5vh;
+      margin-top: -0.1fr;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.5))
+      drop-shadow(0 0 20px rgba(255,255,255,0.3));
+      clip-path: inset(0 0 0 0);
+    }
+    
+    
+    
+    
+    .title-maincn2 {
+      transition: all 1.5s cubic-bezier(0.3,0.8,0.2,1);
+      transition-delay: 0.4s;
+    }
+    
+    .hero-title{
+    
+    
+      opacity:1;
+      transform:translateY(0);
+      transition: all .6s cubic-bezier(.22,1,.36,1);
+      position:absolute;
+      top:0%;
+      left:0%;
+    
+      transform:translate(-50%,-50%);
+      z-index:2;  
+      
+    }
+     
+    .btn{
+      display: inline-block;
+      z-index: 13;
+      justify-content: left;
+      vertical-align: bottom;
+    }
+
+  .btn a{
+    position: relative;
+    display: inline-block;
+    padding: 5px 0px;
+    margin-left: -10px;
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 1px;
+    overflow: hidden;
+    font-family: 'Afacad', sans-serif;
+    font-weight: 100;
+    font-size: 12px;
+    justify-self: center;
+    justify-content:center;
+  }   
+  .bg-svg svg {
+      width: 90vw;
+      opacity: 0.8;
+      z-index: 1;
+  }
+
+  .grid {
+    max-width: 94vw;
+    max-height: 75vh;
+    min-height: 75vh;
+    position: absolute;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    display: grid;
+  
+    /* 👉 列（红色） */
+    grid-template-columns: repeat(5, 1fr);
+  
+    /* 👉 行 */
+    grid-template-rows: repeat(12, 1fr);
+  
+  
+  
+    /* 👉 gap（蓝色） */
+    gap: 8px;
+  
+    z-index: 4;
+  
+    grid-area: 1 / 1;   /* 🔥 重叠关键 */
+  
+    padding: 5%;
+  }
+
+  .card {
+    background: rgba(250, 250, 250, 0.168);
+     border-radius: 16px;
+     box-shadow: 0 4px 30px rgba(64, 54, 54, 0.1);
+     backdrop-filter: blur(10px);
+     -webkit-backdrop-filter: blur(8px);
+     border: 0.5px solid rgba(255, 255, 255, 0.3);
+     padding-left: 1%;
+     padding-right: 1%;
+     animation: float 6s ease-in-out infinite;
+  }
+   
+  .card-1 {
+    grid-column: 2 / span 2;
+    grid-row: 1 / span 2;
+    margin-top: 30%;
+    margin-bottom: -20%;
+    margin-left: -20%;
+    margin-right: 20%;
+    opacity: 0.6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  /* 👈 关键 */
+    padding: 10px;
+  }
+  
+  .card-1:hover{
+    height: 110%;
+    margin-top: 10%;
+    margin-bottom: -10%;
+  
+  }
+  
+
+  .card-1:hover .ui{
+  
+    opacity: 1;
+    transform: scale(1);
+  
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  
+   animation: spin 3s linear infinite;
+   top: 50%;
+    left: 38%;
+  }
+  
+  
+  .top {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    height: auto;
+    width: 20%;
+    z-index: 5;
+    transform: scale(0.5);
+      transform-origin: left top;
+  }
+  
+  .bottom {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 5;
+    transform: scale(0.5);
+    transform-origin: right bottom;
+  
+  }
+  
+  .bottom2 {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    width: 60%;
+    height: auto;
+    z-index: 5;
+    transform: scale(0.8);
+    transform-origin: left bottom;
+  }
+  
+  .card-2 {
+    grid-column: 3 / span 2;
+    grid-row: 2 / span 1;
+    margin-right: 12%;
+    margin-left: -12%;
+  
+    opacity: 0.6;
+  }
+  
+  .card-2:hover{
+    margin-bottom: -20%;
+    margin-top: -15%;
+  }
+  
+  
+  
+  
+  .img-wrapper {
+    position: absolute;
+    inset: 0;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    z-index: 0;
+  }
+  
+  
+  .ui{
+    position: absolute;
+    opacity: 0;
+    object-fit: contain;
+    max-width: 100%;
+    max-height:100%;
+    top: 90%;
+    left: 50%;
+    
+  }
+  
+  .icon{
+   opacity: 0;
+   position: absolute;
+   margin-left: 10%;
+   margin-right: 10%;
+   justify-items: center;
+   padding: 20%;
+  
+  }
+  
+  
+  .card-2:hover .icon{
+  
+    opacity: 1;
+  }
+  
+  .card-2:hover .ui{
+  
+    opacity: 1;
+    transform: scale(1);
+  
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  
+   animation: spin 3s linear infinite;
+  
+   margin-top: -10%;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  
+  
+  .card-3 {
+    grid-column: 2 / span 3;
+    grid-row: 9 / span 3;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    opacity: 0.6;
+    overflow: hidden;
+    padding-left: 10%;
+    padding-right: -10%;
+  
+  }
+  
+  .card-video{
+      z-index: 1;
+      position: absolute;
+      left: 2%;
+      top: 4%;
+      bottom:4%;
+      height: 92%;
+      width: 96%;
+      overflow: hidden;
+  }
+  
+  .card-4 {
+    grid-column: 1 / span 2;
+    grid-row: 5 / span 2;
+    margin-left: 28%;
+    margin-right: -28%;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    opacity: 0.6;
+    z-index: 10;
+  }
+
+  .card-4:hover{
+    margin-left: 28%;
+    margin-right: -28%;
+    margin-top: 0%;
+    margin-bottom: 48%;
+    opacity: 0.6;
+  }
+
+  .card-4:hover .ui{
+
+    opacity: 1;
+    transform: scale(1);
+  
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  
+   animation: spin 3s linear infinite;
+   top: 80%;
+   left: 42%;
+  }
+  
+  
+  .bg-svg {
+    z-index: 0;
+    pointer-events: none;
+    grid-area: 1 / 1;   /* 🔥 重叠关键 */
+    
+    justify-content: center;
+    align-items: center;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+   transform: translate(-50%, -50%);
+  
+  }
+  
+  
+  
+  .bg-svg svg {
+        width: 90vw;
+        opacity: 0.8;
+        z-index: 1;
+  }
+  
+  
+  
+  .triggerSection svg{
+    width: 60vw;
+    opacity: 0.8;
+    z-index: 1;
+  
+  }
+  
+  .grid {
+    position: sticky;
+    height: 95vh;
+    z-index: 20;   /* 在 SVG 上面 */
+    max-width: 90vw;
+  }
+
+
+  .diagram{
+    width: 18vh;
+    height: auto;
+    position: relative;
+    top: 0%;
+    z-index: 1;
+    mix-blend-mode: screen;
+    opacity: 0.8;
+    transition: opacity 1.2s cubic-bezier(0.3,0.8,0.2,1);
+  
+  }
+
+}
+
+
