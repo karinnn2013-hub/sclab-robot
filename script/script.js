@@ -1,5 +1,37 @@
 console.log("JS running");
 
+
+function handleScrollUnified() {
+  try {
+    handleScroll(); // 你原来的逻辑
+  } catch (e) {
+    console.warn("scroll error:", e);
+  }
+}
+
+// 正常 scroll
+window.addEventListener('scroll', handleScrollUnified, { passive: true });
+
+// mobile fallback
+if (window.innerWidth < 450) {
+
+  let ticking = false;
+
+  document.addEventListener('touchmove', () => {
+
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        handleScrollUnified();
+        ticking = false;
+      });
+      ticking = true;
+    }
+
+  }, { passive: true });
+
+}
+
+
 window.addEventListener('load', () => {
   document.body.style.opacity = '1';
 });
