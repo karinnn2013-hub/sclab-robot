@@ -1543,6 +1543,12 @@ spline-viewer {
 
    /* none show */
 
+
+      html, body {
+         margin: 0;
+         overflow-x: hidden;
+       }
+
       body{
         padding-left: 2vw;
         padding-right: 2vw;
@@ -1599,12 +1605,12 @@ spline-viewer {
     
     
     .title-main {
-      height: 5vh;
+      height: 6vh;
     }
     
     
     .title-maincn {
-      height: 2vh;
+      height: 3vh;
       margin-top: -0.1fr;
     }
     
@@ -1887,7 +1893,7 @@ spline-viewer {
     margin-bottom: 5%;
     opacity: 0.6;
     overflow: hidden;
-    padding-left: 10%;
+    padding-left: 20%;
     padding-right: -10%;
   
   }
