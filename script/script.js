@@ -279,3 +279,17 @@ if (!isMobile) {
 
 }
 
+const viewer = document.querySelector("spline-viewer");
+
+viewer.addEventListener("load", () => {
+  const app = viewer.spline;
+
+  window.addEventListener("scroll", () => {
+    const progress =
+      window.scrollY /
+      (document.body.scrollHeight - window.innerHeight);
+
+    app.setVariable("scroll", progress);
+  });
+});
+
