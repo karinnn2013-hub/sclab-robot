@@ -9,27 +9,6 @@ function handleScrollUnified() {
   }
 }
 
-// 正常 scroll
-window.addEventListener('scroll', handleScrollUnified, { passive: true });
-
-// mobile fallback
-if (window.innerWidth < 450) {
-
-  let ticking = false;
-
-  document.addEventListener('touchmove', () => {
-
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        handleScrollUnified();
-        ticking = false;
-      });
-      ticking = true;
-    }
-
-  }, { passive: true });
-
-}
 
 
 window.addEventListener('load', () => {
@@ -387,45 +366,38 @@ window.addEventListener('scroll', () => {
 
 });
 
-const dia = document.querySelector('.diagram');
+const diagrams = document.querySelectorAll('.diagram');
 
-let triggereds = new Set(); // ✅ 记录已经触发的卡片
+// 创建 observer
+const observer = new IntersectionObserver((entries) => {
 
-window.addEventListener('scroll', () => {
+  entries.forEach((entry, index) => {
 
-  dia.forEach((el, i) => {
+    const el = entry.target;
 
-    const rect = el.getBoundingClientRect();
-    const triggerPoint = window.innerHeight * 0.85;
+    if (entry.isIntersecting) {
 
-    // 👉 进入视口
-    if (rect.top < triggerPoint) {
+      // 🔥 stagger（用 CSS variable，更稳）
+      el.style.setProperty('--delay', `${index * 0.08}s`);
 
-      if (!triggereds.has(el)) {
-
-        triggereds.add(el);
-
-        // 🔥 stagger delay
-        const delay = i * 50;
-
-        setTimeout(() => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        }, delay);
-
-      }
+      el.classList.add('show');
 
     } else {
-      // 👉 scroll 回去消失
-      triggereds.delete(el);
 
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(40px)';
+      el.classList.remove('show');
+
     }
 
   });
 
+}, {
+  threshold: 0.2,              // 进入 20% 就触发
+  rootMargin: "0px 0px -10% 0px" // 提前一点触发（类似你原来 0.85）
 });
+
+
+// 绑定所有元素
+diagrams.forEach(el => observer.observe(el));
 
 
 
