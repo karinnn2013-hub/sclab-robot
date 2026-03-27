@@ -2172,6 +2172,23 @@ spline-viewer {
   }
 
 
+  .feature-section2 {
+    width: 100vw;
+    height:70vh;
+
+    margin-top: 0%;
+  
+    background: black;
+  
+    /* 👉 左右 padding（你图里的黑边） */
+  
+    display: grid;
+    align-items: center; 
+    margin-bottom: 30px;
+    
+    position: relative;
+
+  }
 
 
 
