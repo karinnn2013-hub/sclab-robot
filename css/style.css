@@ -1554,11 +1554,6 @@ spline-viewer {
          overflow-x: hidden;
        }
 
-      body{
-        padding-left: 2vw;
-        padding-right: 2vw;
-      }
-
 
 
      /* spline layer */
@@ -1597,13 +1592,14 @@ spline-viewer {
     .hero{
       min-height:100vh;
       position: relative;
+
     }
        
     .hero-title{
       margin-top: 20vh;
       padding-left: 10px;
       padding-right: 10px;
-
+      margin-left: 3vw;
     }
     
     
