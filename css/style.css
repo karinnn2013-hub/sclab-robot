@@ -1517,7 +1517,9 @@ spline-viewer {
     display: none;
   }
 
-  
+  #footer-logo{
+    display: none;
+  }
 
 
   /* mobile */
@@ -1540,6 +1542,9 @@ spline-viewer {
       display: none;
     }
 
+    #desktop-logo{
+      display: none;
+    }
 
    /* none show */
 
@@ -1701,12 +1706,12 @@ spline-viewer {
   }
 
   .grid {
-    max-width: 94vw;
-    max-height: 75vh;
-    min-height: 75vh;
+    max-width: 90vw;
+    max-height: 70vh;
+    min-height: 70vh;
     position: absolute;
-    margin-left: 3vw;
-    margin-right: 3vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
     display: grid;
   
     /* 👉 列（红色） */
@@ -1724,7 +1729,6 @@ spline-viewer {
   
     grid-area: 1 / 1;   /* 🔥 重叠关键 */
   
-    padding: 5%;
   }
 
   .card {
@@ -1889,12 +1893,13 @@ spline-viewer {
   .card-3 {
     grid-column: 2 / span 3;
     grid-row: 9 / span 3;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin-top: 25%;
+    margin-bottom: -25%;
     opacity: 0.6;
-    overflow: hidden;
-    padding-left: 20%;
-    padding-right: -10%;
+    width: 110%;
+    padding-left: -20%;
+    padding-right: -30%;
+    position: relative;
   
   }
   
@@ -1911,11 +1916,11 @@ spline-viewer {
   
   .card-4 {
     grid-column: 1 / span 2;
-    grid-row: 5 / span 2;
+    grid-row: 8 / span 2;
     margin-left: 28%;
     margin-right: -28%;
-    margin-top: 0%;
-    margin-bottom: 0%;
+    margin-top: -30%;
+    margin-bottom: 30%;
     opacity: 0.6;
     z-index: 10;
   }
@@ -1993,6 +1998,184 @@ spline-viewer {
   
   }
 
+
+  #footer-logo{
+  display: block;
+  }
+
+
+  .footer {
+    margin-top: 10vh;
+    background: rgba(0, 0, 0, 0.147);
+    backdrop-filter: blur(20px);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0px;
+    padding-bottom: 5px;
+    padding-top: 4vh;
+  }
+
+  
+  /* 标题 */
+  .footer-title {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: white;
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+  
+  /* 内容 */
+  .footer-block p {
+    font-size: 13px;
+    line-height: 0.9;
+    opacity: 0.7;
+  }
+
+  .footer p {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+  }
+
+  .text-container p{
+    margin-block-start: 0.3em;
+    margin-block-end: 0.3em;
+  }
+  
+
+  .footer div{
+      padding:0;
+  }
+
+  .footer-container{
+    max-height: 40vh;
+    min-height: 40vh;
+    position: absolute;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    display: grid;
+  
+    /* 👉 列（红色） */
+    grid-template-columns: repeat(1, 1fr);
+  
+    /* 👉 行 */
+    grid-template-rows: repeat(4, 1fr);
+
+    /* 👉 gap（蓝色） */
+    gap: 20px;
+
+    z-index: 4;
+
+    grid-area: 1 / 1;   /* 🔥 重叠关键 */
+
+    padding: 0%;
+  }
+
+.footer-logo{
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 1;
+    display: flex;
+    flex-direction: row;
+
 }
+
+.team{
+    grid-column: 1 / span 1;
+    grid-row: 2 / span 1;
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    font-weight: 300;
+    margin-top: 0;
+
+}
+
+.contact{
+    grid-column: 1 / span 1;
+    grid-row: 3 / span 1;
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    font-weight:  300;
+}
+
+ /* 底部 */
+ .footer-bottom {
+    grid-column: 1 / span 1;
+    grid-row: 4 / span 1;
+    max-width: 90vw;
+    font-size: 8px;
+    opacity: 0.5;
+    align-self: end;
+    margin-bottom: 10px;
+    font-weight:  300;
+  }
+  
+  .smalltext{
+    font-size: 13px;
+    font-weight: 100;
+    color:#ffffffb5 ;
+    margin-right: 5vw;
+    line-height: 12px;
+
+  }
+
+.logo2{
+    position: absolute;
+    top: 0;
+    left:0;
+    margin-right: 30vw;
+}
+
+.text-container{
+    display: flex;
+    flex-direction: row;
+    row-gap: 10px;
+}
+
+ 
+.smalltext2{
+    font-size: 10px;
+    font-weight: 100;
+    color:#ffffffb5 ;
+    margin-left: auto;
+  }
+
+
+  .footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+  
+  
+    width: 100%;
+    height: 1px;
+  
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.428),
+      transparent
+    );
+  
+    transform: translateX(-100%) translateZ(0);
+    will-change: transform;
+  
+    animation: scan 5s linear infinite;
+  }
+  
+  @keyframes scan {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+
+
+
+
+
+}
+
 
 
