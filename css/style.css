@@ -1525,6 +1525,10 @@ spline-viewer {
   /* mobile */
   @media (max-width: 450px) {
 
+    #preloader{
+      display:none;
+    }
+
     .cursor {
       display: none !important;
     }
