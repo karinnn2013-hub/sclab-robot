@@ -64,55 +64,6 @@ document.addEventListener("touchstart", () => {
 }, { once: true });
 
 
-// =======================
-// TOUCH → VIDEO CONTROL
-// =======================
-let progress = 0;   // 0 → 1
-let lastY = 0;
-
-// touch start
-document.addEventListener("touchstart", (e) => {
-  lastY = e.touches[0].clientY;
-});
-
-// touch move（核心）
-document.addEventListener("touchmove", (e) => {
-
-  const currentY = e.touches[0].clientY;
-  const deltaY = lastY - currentY;
-
-  lastY = currentY;
-
-  // 👇 灵敏度（可以调）
-  progress += deltaY * 0.0015;
-
-  // clamp
-  progress = Math.max(0, Math.min(1, progress));
-
-}, { passive: true });
-
-
-// =======================
-// RAF → SMOOTH VIDEO
-// =======================
-let currentTime = 0;
-
-function animate() {
-
-  if (scrollV.duration) {
-
-    const targetTime = scrollV.duration * progress;
-
-    // 平滑（关键）
-    currentTime += (targetTime - currentTime) * 0.1;
-
-    scrollV.currentTime = currentTime;
-  }
-
-  requestAnimationFrame(animate);
-}
-
-animate();
 
 
 
