@@ -1,195 +1,126 @@
 console.log("JS running");
+document.addEventListener("DOMContentLoaded", () => {
 
-const intro = document.getElementById("introVideo");
-const scrollV = document.getElementById("scrollVideo");
-const spline = document.getElementById("spline-desktop");
+  const intro = document.getElementById("introVideo");
+  const scrollV = document.getElementById("scrollVideo");
+  const spline = document.getElementById("spline-desktop");
 
-function isMobile() {
-  return window.innerWidth < 450;
-}
+  function isMobile() {
+    return window.innerWidth < 450;
+  }
 
-let videoReady = false;
+  function endLoading() {
+    document.body.classList.add("loaded");
+    console.log("✅ preload ended");
+  }
 
-// =======================
-// INIT
-// =======================
-window.addEventListener("load", () => {
-
+  // =========================
+  // MOBILE
+  // =========================
   if (isMobile()) {
 
-    if (spline) spline.remove();
+    console.log("📱 mobile");
 
-    // ✅ 先加载 scroll video
-    scrollV.src = "./assets/scroll.mp4";
-    scrollV.load();
+    if (spline) spline.classList.add("hidden");
 
-    scrollV.addEventListener("loadeddata", () => {
-      scrollV.currentTime = 0.01;
-      videoReady = true;
-    });
+    if (intro && scrollV) {
 
-    // ✅ 再播 intro
-    intro.src = "./assets/intro.mp4";
-    intro.play();
+      // ---------- load video ----------
+      scrollV.src = "./assets/scroll.mp4";
+      scrollV.load();
 
-  } else {
+      scrollV.addEventListener("loadeddata", () => {
+        scrollV.currentTime = 0.01;
+        endLoading();
+      });
 
-    if (intro) intro.remove();
-    if (scrollV) scrollV.remove();
+      // ---------- intro ----------
+      intro.src = "./assets/intro.mp4";
+      intro.play().catch(() => {});
 
-    if (spline) {
-      spline.setAttribute(
-        "url",
-        "https://prod.spline.design/VxylDYgy5NiSa3YW/scene.splinecode"
-      );
+      intro.addEventListener("ended", () => {
+        scrollV.style.opacity = "1";
+        intro.style.opacity = "0";
+      });
+
+      // =========================
+      // 🔥 TOUCH CONTROL（替代 scroll）
+      // =========================
+
+      let unlocked = false;
+      let direction = 1; // 1 forward, -1 reverse
+      let playing = false;
+
+      function animateVideo() {
+
+        if (!scrollV) return;
+
+        const speed = 0.02;
+
+        scrollV.currentTime += speed * direction;
+
+        // 边界控制
+        if (scrollV.currentTime >= scrollV.duration) {
+          scrollV.currentTime = scrollV.duration;
+          playing = false;
+          return;
+        }
+
+        if (scrollV.currentTime <= 0) {
+          scrollV.currentTime = 0;
+          playing = false;
+          return;
+        }
+
+        requestAnimationFrame(animateVideo);
+      }
+
+      document.addEventListener("touchstart", () => {
+
+        if (!scrollV) return;
+
+        // 👉 解锁（只一次）
+        if (!unlocked) {
+          scrollV.currentTime = 0.01;
+          unlocked = true;
+          console.log("🔓 video unlocked");
+        }
+
+        // 👉 切换方向
+        direction *= -1;
+
+        console.log(direction === 1 ? "▶️ forward" : "⏪ reverse");
+
+        // 👉 开始播放
+        if (!playing) {
+          playing = true;
+          animateVideo();
+        }
+
+      }, { passive: true });
+
     }
 
   }
 
-});
+  // =========================
+  // DESKTOP
+  // =========================
+  else {
 
-intro.addEventListener("ended", () => {
+    console.log("💻 desktop");
 
-  if (!videoReady) {
-    console.warn("scroll video not ready yet");
-    return;
-  }
+    if (intro) intro.classList.add("hidden");
+    if (scrollV) scrollV.classList.add("hidden");
 
-  // 🔥 强制显示 scroll video
-  scrollV.style.opacity = "1";
+    if (spline) spline.classList.remove("hidden");
 
-  // 🔥 确保在最上层
-  scrollV.style.zIndex = "2";
-
-  // 🔥 隐藏 intro
-  intro.style.opacity = "0";
-  intro.style.zIndex = "0";
-
-});
-
-
-
-let started = false;
-
-document.addEventListener("touchstart", () => {
-
-  if (!started) {
-
-    scrollV.play().then(() => {
-      scrollV.pause(); // 👉 先解锁
-      started = true;
-    });
+    setTimeout(() => {
+      endLoading();
+    }, 800);
 
   }
 
-  // 👉 真正播放
-  scrollV.play();
-
-}, { passive: true });
-
-
-scrollV.addEventListener("ended", () => {
-
-  console.log("scroll video ended");
-
-  // 👉 释放布局
-  scrollV.classList.add("release");
-
-});
-
-
-
-
-const title1 = document.querySelector(".title-main");
-const title1cn = document.querySelector(".title-maincn");
-
-const title3 = document.querySelector(".title-main2");
-const title3cn = document.querySelector(".title-maincn2");
-
-window.addEventListener('scroll', () => {
-
-  const trigger = 120;
-
-  if (window.scrollY > trigger) {
-
-    // 👉 第一组消失
-    title1.classList.add("hidden");
-    title1cn.classList.add("hidden");
-
-    // 👉 第二组出现
-    title3.classList.remove("hidden");
-    title3cn.classList.remove("hidden");
-
-    title3.classList.add("visible");
-    title3cn.classList.add("visible");
-
-  } else {
-
-    // 👉 第一组出现
-    title1.classList.remove("hidden");
-    title1cn.classList.remove("hidden");
-
-    // 👉 第二组消失
-    title3.classList.remove("visible");
-    title3cn.classList.remove("visible");
-
-    title3.classList.add("hidden");
-    title3cn.classList.add("hidden");
-  }
-
-});
-
-
-setTimeout(() => {
-  document.documentElement.style.scrollBehavior = "smooth";
-}, 100);
-/* =========================
-   1️⃣ 页面初始化（防止自动滚动）
-========================= */
-history.scrollRestoration = "manual";
-
-window.addEventListener("beforeunload", () => {
-  window.scrollTo(0, 0);
-});
-
-/* =========================
-   2️⃣ 自定义鼠标
-========================= */
-
-const cursor = document.querySelector(".custom-cursor");
-
-/* 让 cursor 跟随鼠标 */
-document.addEventListener("mousemove", e => {
-  cursor.style.left = e.clientX + "px";
-  cursor.style.top = e.clientY + "px";
-});
-
-/* 所有可 hover 元素 */
-const hoverTargets = document.querySelectorAll("a, button, .hover-target");
-
-hoverTargets.forEach(el => {
-  el.addEventListener("mouseenter", () => {
-    cursor.classList.add("hover");
-  });
-  el.addEventListener("mouseleave", () => {
-    cursor.classList.remove("hover");
-  });
-});
-
-
-/* =========================
-   3️⃣ scroll indicator
-========================= */
-const scrollIndicator = document.querySelector('.scrollIndicator');
-
-window.addEventListener('scroll', () => {
-  if (!scrollIndicator) return;
-
-  if (window.scrollY > 20) {
-    scrollIndicator.style.opacity = "0";
-  } else {
-    scrollIndicator.style.opacity = "1";
-  }
 });
 
 

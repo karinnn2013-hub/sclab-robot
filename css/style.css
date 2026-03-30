@@ -57,6 +57,11 @@ section{
     opacity: 0;
     visibility: hidden;
   }
+
+  body.loaded #preloader {
+    opacity: 0;
+    pointer-events: none;
+  }
   
   /* Loader（简单旋转） */
   .loader {
@@ -1533,6 +1538,46 @@ spline-viewer {
   /* mobile */
   @media (max-width: 450px) {
 
+            /* ❌ 不要锁 body */
+     body {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+     }
+     
+     /* 👇 scroll 主容器 */
+      .scroll-container {
+         position: relative;
+     }
+     /* 👇 spline layer（关键） */
+     .spline-layer {
+       position: sticky;
+       top: 0;
+       height: 100vh;
+       z-index: 0;
+     }   /* 👇 spline */
+     #spline-desktop {
+       width: 100%;
+       height: 100%;
+     }
+     
+     /* 👇 内容盖在上面 */
+     .section {
+       position: relative;
+       z-index: 2;
+       min-height: 100vh;
+     }
+     
+
+
+
+
+
+     .video-wrapper {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 1;
+    }
 
       .hero video {
         display: block;
@@ -1540,9 +1585,8 @@ spline-viewer {
         left: 0;
         width: 100vw;
         height: 100vh;
+        position: absolute;
         object-fit: cover; 
-        z-index: 1;
-        position: fixed;
         top: 0;
         left: 0;
         pointer-events: none;
@@ -1580,7 +1624,7 @@ spline-viewer {
         z-index: 1;
       }
 
-      
+
     #preloader{
       display:none;
     }
@@ -1625,7 +1669,6 @@ spline-viewer {
       left: 0;
       width: 100vw;
       height: 100vh;   /* 在背景 */
-       overflow: hidden;
 
     }
 
