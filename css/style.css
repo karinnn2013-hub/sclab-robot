@@ -1563,11 +1563,24 @@ spline-viewer {
       }
       
       
-      
       #introVideo.hide {
         opacity: 0;
       }
 
+
+      #scrollVideo.active {
+        opacity: 1;
+      }
+      
+      /* 播放结束 → 回到文档流 */
+      #scrollVideo.release {
+        position: relative;
+        width: 100%;
+        height: auto;
+        z-index: 1;
+      }
+
+      
     #preloader{
       display:none;
     }

@@ -1,15 +1,5 @@
 console.log("JS running");
 
-
-function handleScrollUnified() {
-  try {
-    handleScroll(); // 你原来的逻辑
-  } catch (e) {
-    console.warn("scroll error:", e);
-  }
-}
-
-
 const intro = document.getElementById("introVideo");
 const scrollV = document.getElementById("scrollVideo");
 const spline = document.getElementById("spline-desktop");
@@ -74,6 +64,36 @@ intro.addEventListener("ended", () => {
   // 🔥 隐藏 intro
   intro.style.opacity = "0";
   intro.style.zIndex = "0";
+
+});
+
+
+
+let started = false;
+
+document.addEventListener("touchstart", () => {
+
+  if (!started) {
+
+    scrollV.play().then(() => {
+      scrollV.pause(); // 👉 先解锁
+      started = true;
+    });
+
+  }
+
+  // 👉 真正播放
+  scrollV.play();
+
+}, { passive: true });
+
+
+scrollV.addEventListener("ended", () => {
+
+  console.log("scroll video ended");
+
+  // 👉 释放布局
+  scrollV.classList.add("release");
 
 });
 
