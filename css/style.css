@@ -1543,10 +1543,8 @@ spline-viewer {
         left: 0;
         width: 100vw;
         height: 100vh;
-        object-fit: cover;
-        pointer-events: none;
+        object-fit: cover; 
         z-index: 1;
-        pointer-events: none;
       }
     
       #scrollVideo {
