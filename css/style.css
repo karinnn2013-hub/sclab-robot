@@ -1534,8 +1534,6 @@ spline-viewer {
   @media (max-width: 450px) {
 
 
-
-
       .hero video {
         display: block;
         position: sticky;
@@ -1627,6 +1625,10 @@ spline-viewer {
       height: 25px;   /* 根据你设计调 */
       object-fit: contain;
     }
+
+    #spline-layer{
+      display:none;
+  }
 
 
     .hero{
