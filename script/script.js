@@ -11,6 +11,112 @@ function handleScrollUnified() {
 
 
 
+const intro = document.getElementById("introVideo");
+const scrollV = document.getElementById("scrollVideo");
+const spline = document.getElementById("spline-desktop");
+
+function isMobile() {
+  return window.innerWidth < 450;
+}
+
+window.addEventListener("load", () => {
+
+  if (isMobile()) {
+
+    // ✅ 安全移除 spline
+    if (spline) spline.remove();
+
+    // ✅ 提前加载 scroll video（🔥关键）
+    scrollV.src = "./assets/scroll.mp4";
+    scrollV.load();
+
+    // ✅ 等 metadata → 定位第一帧
+    scrollV.addEventListener("loadedmetadata", () => {
+      scrollV.currentTime = 0.01; // ⚠️ 不要用 0（Safari bug）
+    });
+
+    // ✅ 播 intro
+    intro.src = "./assets/intro.mp4";
+    intro.play();
+
+  } else {
+
+    if (intro) intro.remove();
+    if (scrollV) scrollV.remove();
+
+    if (spline) {
+      spline.setAttribute(
+        "url",
+        "https://prod.spline.design/VxylDYgy5NiSa3YW/scene.splinecode"
+      );
+    }
+
+  }
+
+});
+
+
+
+document.addEventListener("touchstart", () => {
+  scrollV.play().then(() => {
+    scrollV.pause();
+  });
+}, { once: true });
+
+
+// =======================
+// TOUCH → VIDEO CONTROL
+// =======================
+let progress = 0;   // 0 → 1
+let lastY = 0;
+
+// touch start
+document.addEventListener("touchstart", (e) => {
+  lastY = e.touches[0].clientY;
+});
+
+// touch move（核心）
+document.addEventListener("touchmove", (e) => {
+
+  const currentY = e.touches[0].clientY;
+  const deltaY = lastY - currentY;
+
+  lastY = currentY;
+
+  // 👇 灵敏度（可以调）
+  progress += deltaY * 0.0015;
+
+  // clamp
+  progress = Math.max(0, Math.min(1, progress));
+
+}, { passive: true });
+
+
+// =======================
+// RAF → SMOOTH VIDEO
+// =======================
+let currentTime = 0;
+
+function animate() {
+
+  if (scrollV.duration) {
+
+    const targetTime = scrollV.duration * progress;
+
+    // 平滑（关键）
+    currentTime += (targetTime - currentTime) * 0.1;
+
+    scrollV.currentTime = currentTime;
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+
+
+
 window.addEventListener('load', () => {
   document.body.style.opacity = '1';
 });
