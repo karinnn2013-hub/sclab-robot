@@ -10,7 +10,6 @@ function handleScrollUnified() {
 }
 
 
-
 const intro = document.getElementById("introVideo");
 const scrollV = document.getElementById("scrollVideo");
 const spline = document.getElementById("spline-desktop");
@@ -19,23 +18,27 @@ function isMobile() {
   return window.innerWidth < 450;
 }
 
+let videoReady = false;
+
+// =======================
+// INIT
+// =======================
 window.addEventListener("load", () => {
 
   if (isMobile()) {
 
-    // ✅ 安全移除 spline
     if (spline) spline.remove();
 
-    // ✅ 提前加载 scroll video（🔥关键）
+    // ✅ 先加载 scroll video
     scrollV.src = "./assets/scroll.mp4";
     scrollV.load();
 
-    // ✅ 等 metadata → 定位第一帧
-    scrollV.addEventListener("loadedmetadata", () => {
-      scrollV.currentTime = 0.01; // ⚠️ 不要用 0（Safari bug）
+    scrollV.addEventListener("loadeddata", () => {
+      scrollV.currentTime = 0.01;
+      videoReady = true;
     });
 
-    // ✅ 播 intro
+    // ✅ 再播 intro
     intro.src = "./assets/intro.mp4";
     intro.play();
 
@@ -55,53 +58,25 @@ window.addEventListener("load", () => {
 
 });
 
+intro.addEventListener("ended", () => {
 
+  if (!videoReady) {
+    console.warn("scroll video not ready yet");
+    return;
+  }
 
-document.addEventListener("touchstart", () => {
-  scrollV.play().then(() => {
-    scrollV.pause();
-  });
-}, { once: true });
+  // 🔥 强制显示 scroll video
+  scrollV.style.opacity = "1";
 
+  // 🔥 确保在最上层
+  scrollV.style.zIndex = "2";
 
+  // 🔥 隐藏 intro
+  intro.style.opacity = "0";
+  intro.style.zIndex = "0";
 
-
-
-
-window.addEventListener('load', () => {
-  document.body.style.opacity = '1';
 });
 
-window.addEventListener('load', () => {
-  document.body.classList.remove('preload');
-  document.body.classList.add('ready');
-});
-
-window.addEventListener('load', () => {
-  document.querySelectorAll('.hero').forEach(el => {
-    el.style.visibility = 'visible';
-  });
-});
-
-
-window.addEventListener("load", () => {
-  const preloader = document.getElementById("preloader");
-
-  // 稍微延迟一点，让视觉更顺
-  setTimeout(() => {
-    preloader.classList.add("hidden");
-  }, 500);
-});
-
-
-
-document.body.classList.add("init");
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.body.classList.remove("init");
-  }, 200);
-});
 
 
 
