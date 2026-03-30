@@ -1587,6 +1587,7 @@ spline-viewer {
       display: none;
     }
 
+
    /* none show */
 
 
@@ -1641,11 +1642,24 @@ spline-viewer {
       padding-left: 10px;
       padding-right: 10px;
       margin-left: 3vw;
+      animation: heroTitleEntrance 1.5s cubic-bezier(.22,1,.36,1) forwards;
     }
     
     
+  
+  @keyframes heroTitleEntrance {
+  
+      from{
+        opacity:0;
+        transform: translateX(20px);
+      }
     
+      to{
+        opacity:1;
+        transform: translateX(0);
+      }
     
+  }
     .title-main {
       height: 6vh;
     }
