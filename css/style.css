@@ -1789,11 +1789,15 @@ spline-viewer {
               opacity: 0.8;
               z-index: 1;
           }
+
+          .feature-section2 {
+            height: 100vh;
+          }
         
           .grid {
             max-width: 90vw;
-            max-height: 65vh;
-            min-height: 65vh;
+            max-height: 80vh;
+            min-height:80vh;
             position: absolute;
             margin-left: 2vw;
             margin-right: 2vw;
@@ -2261,7 +2265,6 @@ spline-viewer {
         
           .feature-section2 {
             width: 100vw;
-            height:70vh;
         
             margin-top: 0%;
           
@@ -2271,7 +2274,6 @@ spline-viewer {
           
             display: grid;
             align-items: center; 
-            margin-bottom: 30px;
             
             position: relative;
         
