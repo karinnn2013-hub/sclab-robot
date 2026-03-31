@@ -1537,6 +1537,11 @@ spline-viewer {
   }
 
 
+  #nextSection {
+    scroll-margin-top: 80px;
+  }
+
+
   /* mobile */
 @media (max-width: 450px) {
 
@@ -1545,6 +1550,9 @@ spline-viewer {
               -webkit-overflow-scrolling: touch;
              }
 
+             #nextSection {
+              scroll-margin-top: -250vh;
+            }
 
              #spline-layer {
                display: none;

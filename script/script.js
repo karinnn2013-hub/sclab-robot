@@ -344,6 +344,8 @@ btn.addEventListener('click', () => {
 
 });
 
+
+
 const card = document.querySelectorAll('.card');
 
 let triggered = new Set(); // ✅ 记录已经触发的卡片
