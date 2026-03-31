@@ -125,7 +125,7 @@ const title2 = document.querySelector(".title-maincn");
 window.addEventListener('scroll', () => {
   if (!title || !title2) return;
 
-  if (window.scrollY > 120) {
+  if (window.scrollY > 80) {
     title.classList.add("hidden");
     title2.classList.add("hidden");
   } else {
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (exploreBtn) {
     exploreBtn.addEventListener("click", () => {
       window.scrollBy({
-        top: window.innerHeight * 0.8,
+        top: window.innerHeight * 0.9,
         behavior: "smooth"
       });
     });
@@ -155,8 +155,8 @@ document.addEventListener("DOMContentLoaded", () => {
 /* =========================
    6️⃣ fade-block 动效（核心修复版）
 ========================= */
-const el = document.querySelector(".title-2");
-const el2 = document.querySelector(".para1");
+const el = document.querySelector(".title-main2");
+const el2 = document.querySelector(".title-maincn2");
 
 let isReady = false;
 
@@ -201,7 +201,27 @@ window.addEventListener("scroll", () => {
 });
 
 
+const heroTitle2 = document.querySelector(".hero-title2");
 
+function handleTitleToggle(scrollY) {
+
+  if (!heroTitle || !heroTitle2) return;
+
+  if (scrollY > 120) {
+    // 👇 hero1 消失
+    heroTitle.classList.add("hidden");
+
+    // 👇 hero2 出现
+    heroTitle2.classList.add("visible");
+
+  } else {
+    // 👇 hero1 出现
+    heroTitle.classList.remove("hidden");
+
+    // 👇 hero2 消失
+    heroTitle2.classList.remove("visible");
+  }
+}
 
 
 const btn = document.querySelector('.scroll-btn');
@@ -477,17 +497,3 @@ function animateDot(path, dot) {
 }
 
 
-let lastScrollY = window.scrollY;
-const footer = document.querySelector('.footer');
-
-window.addEventListener('scroll', () => {
-  const current = window.scrollY;
-
-  if (current > lastScrollY) {
-    footer.style.transform = "translateY(100%)";
-  } else {
-    footer.style.transform = "translateY(0)";
-  }
-
-  lastScrollY = current;
-});
