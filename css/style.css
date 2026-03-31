@@ -1550,6 +1550,7 @@ spline-viewer {
               -webkit-overflow-scrolling: touch;
              }
 
+
              #nextSection {
               scroll-margin-top: -250vh;
             }
@@ -1662,8 +1663,8 @@ spline-viewer {
         
             .hero{
               max-height:30vh;
-              position: relative;
-              display:contents;
+              position: sticky;
+              display: block;
               background-color: rgba(0, 0, 0, 0);
             }
                
