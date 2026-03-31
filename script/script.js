@@ -22,11 +22,9 @@ const imageElement = document.getElementById('imageElement');
 // STATE
 // =========================
 let currentState = 0; 
-// 0 = intro
-// 2 = final
-
 let isPlaying = false;
 let lastScrollY2 = window.scrollY;
+let reverseLock = false; // 🔒 防止重复触发
 
 // =========================
 // SWITCH IMAGE
@@ -36,22 +34,21 @@ const switchImage = (src) => {
 };
 
 // =========================
-// SCROLL
+// SCROLL LOGIC（抽出来）
 // =========================
-window.addEventListener('scroll', () => {
+function handleScroll() {
 
-  var currentScrollY = window.scrollY;
+  const currentScrollY = window.scrollY;
   const delta = currentScrollY - lastScrollY2;
 
   const goingDown = delta > 1;
   const goingUp = delta < -1;
 
-  lastScrollY2 = currentScrollY;
-
   // ▶ 向下播放
   if (goingDown && currentState === 0 && !isPlaying) {
 
     isPlaying = true;
+    currentState = 1;
 
     switchImage(scrollForward + "?t=" + Date.now());
 
@@ -62,31 +59,56 @@ window.addEventListener('scroll', () => {
     }, 1200);
   }
 
-  // ⏪ 向上播放
-  if (window.scrollY < 50 && currentState === 2 && !isPlaying) {
+  // ⏪ 向上播放（加锁版）
+  if (currentScrollY < 50 && currentState === 2 && !isPlaying && !reverseLock) {
 
+    reverseLock = true;
     isPlaying = true;
     currentState = -1;
-  
-    // 🔥 关键：先清空
+
     imageElement.src = "";
-  
-    // 🔥 下一帧再加载 gif（确保浏览器重启动画）
+
     requestAnimationFrame(() => {
-  
+
       switchImage(scrollReverse + "?t=" + Date.now());
-  
+
       setTimeout(() => {
         switchImage(intro);
         currentState = 0;
         isPlaying = false;
+
+        // 🔓 延迟解锁（防止连续触发）
+        setTimeout(() => {
+          reverseLock = false;
+        }, 100);
+
       }, 1200);
-  
+
     });
   }
 
-});
+  // 👇 最后更新（一定要在最后）
+  lastScrollY2 = currentScrollY;
+}
 
+// =========================
+// THROTTLE（关键）
+// =========================
+let ticking = false;
+
+window.addEventListener('scroll', () => {
+
+  if (!ticking) {
+
+    requestAnimationFrame(() => {
+      handleScroll();
+      ticking = false;
+    });
+
+    ticking = true;
+  }
+
+});
 // =========================
 // 强制可滚动（测试用）
 // =========================
