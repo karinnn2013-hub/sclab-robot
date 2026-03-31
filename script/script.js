@@ -1,5 +1,12 @@
 console.log("JS running");
 
+document.addEventListener("mousemove", (e) => {
+  const cursor = document.querySelector(".custom-cursor");
+  if (!cursor) return;
+
+  cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+});
+
 const intro = './assets/intro-last.png';
 const scrollForward = './assets/scroll.gif';
 const scrollReverse = './assets/scroll-reverse.gif';
@@ -121,6 +128,7 @@ document.body.style.height = "200vh";
 ========================= */
 const title = document.querySelector(".title-main");
 const title2 = document.querySelector(".title-maincn");
+const scrollbtn = document.querySelector(".btn");
 
 window.addEventListener('scroll', () => {
   if (!title || !title2) return;
@@ -128,9 +136,12 @@ window.addEventListener('scroll', () => {
   if (window.scrollY > 80) {
     title.classList.add("hidden");
     title2.classList.add("hidden");
+    scrollbtn.classList.add("hidden");
+
   } else {
     title.classList.remove("hidden");
     title2.classList.remove("hidden");
+    scrollbtn.classList.remove("hidden");
   }
 });
 
@@ -202,6 +213,7 @@ window.addEventListener("scroll", () => {
 
 
 const heroTitle2 = document.querySelector(".hero-title2");
+const heroTitle = document.querySelector(".hero-title");
 
 function handleTitleToggle(scrollY) {
 
