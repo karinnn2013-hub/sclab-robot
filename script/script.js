@@ -1,131 +1,101 @@
 console.log("JS running");
-document.addEventListener("DOMContentLoaded", () => {
 
-  const intro = document.getElementById("introVideo");
-  const scrollV = document.getElementById("scrollVideo");
-  const spline = document.getElementById("spline-desktop");
+const intro = './assets/intro-last.png';
+const scrollForward = './assets/scroll.gif';
+const scrollReverse = './assets/scroll-reverse.gif';
+const finalFrame = './assets/scroll-last.png';
 
-  function isMobile() {
-    return window.innerWidth < 450;
-  }
+// =========================
+// PRELOAD
+// =========================
+[intro, scrollForward, scrollReverse, finalFrame].forEach(src => {
+  const img = new Image();
+  img.src = src;
+});
 
-  function endLoading() {
-    document.body.classList.add("loaded");
-    console.log("✅ preload ended");
-  }
+// =========================
+// DOM
+// =========================
+const imageElement = document.getElementById('imageElement');
 
-  // =========================
-  // MOBILE
-  // =========================
-  if (isMobile()) {
+// =========================
+// STATE
+// =========================
+let currentState = 0; 
+// 0 = intro
+// 2 = final
 
-    console.log("📱 mobile");
+let isPlaying = false;
+let lastScrollY2 = window.scrollY;
 
-    if (spline) spline.classList.add("hidden");
+// =========================
+// SWITCH IMAGE
+// =========================
+const switchImage = (src) => {
+  imageElement.src = src;
+};
 
-    if (intro && scrollV) {
+// =========================
+// SCROLL
+// =========================
+window.addEventListener('scroll', () => {
 
-      // ---------- load video ----------
-      scrollV.src = "./assets/scroll.mp4";
-      scrollV.load();
+  var currentScrollY = window.scrollY;
+  const delta = currentScrollY - lastScrollY2;
 
-      scrollV.addEventListener("loadeddata", () => {
-        scrollV.currentTime = 0.01;
-        endLoading();
-      });
+  const goingDown = delta > 1;
+  const goingUp = delta < -1;
 
-      // ---------- intro ----------
-      intro.src = "./assets/intro.mp4";
-      intro.play().catch(() => {});
+  lastScrollY2 = currentScrollY;
 
-      intro.addEventListener("ended", () => {
-        scrollV.style.opacity = "1";
-        intro.style.opacity = "0";
-      });
+  // ▶ 向下播放
+  if (goingDown && currentState === 0 && !isPlaying) {
 
-      // =========================
-      // 🔥 TOUCH CONTROL（替代 scroll）
-      // =========================
+    isPlaying = true;
 
-      let unlocked = false;
-      let direction = 1; // 1 forward, -1 reverse
-      let playing = false;
-
-      function animateVideo() {
-
-        if (!scrollV) return;
-
-        const speed = 0.02;
-
-        scrollV.currentTime += speed * direction;
-
-        // 边界控制
-        if (scrollV.currentTime >= scrollV.duration) {
-          scrollV.currentTime = scrollV.duration;
-          playing = false;
-          return;
-        }
-
-        if (scrollV.currentTime <= 0) {
-          scrollV.currentTime = 0;
-          playing = false;
-          return;
-        }
-
-        requestAnimationFrame(animateVideo);
-      }
-
-      document.addEventListener("touchstart", () => {
-
-        if (!scrollV) return;
-
-        // 👉 解锁（只一次）
-        if (!unlocked) {
-          scrollV.currentTime = 0.01;
-          unlocked = true;
-          console.log("🔓 video unlocked");
-        }
-
-        // 👉 切换方向
-        direction *= -1;
-
-        console.log(direction === 1 ? "▶️ forward" : "⏪ reverse");
-
-        // 👉 开始播放
-        if (!playing) {
-          playing = true;
-          animateVideo();
-        }
-
-      }, { passive: true });
-
-    }
-
-  }
-
-  // =========================
-  // DESKTOP
-  // =========================
-  else {
-
-    console.log("💻 desktop");
-
-    if (intro) intro.classList.add("hidden");
-    if (scrollV) scrollV.classList.add("hidden");
-
-    if (spline) spline.classList.remove("hidden");
+    switchImage(scrollForward + "?t=" + Date.now());
 
     setTimeout(() => {
-      endLoading();
-    }, 800);
+      switchImage(finalFrame);
+      currentState = 2;
+      isPlaying = false;
+    }, 1200);
+  }
 
+  // ⏪ 向上播放
+  if (window.scrollY < 50 && currentState === 2 && !isPlaying) {
+
+    isPlaying = true;
+    currentState = -1;
+  
+    // 🔥 关键：先清空
+    imageElement.src = "";
+  
+    // 🔥 下一帧再加载 gif（确保浏览器重启动画）
+    requestAnimationFrame(() => {
+  
+      switchImage(scrollReverse + "?t=" + Date.now());
+  
+      setTimeout(() => {
+        switchImage(intro);
+        currentState = 0;
+        isPlaying = false;
+      }, 1200);
+  
+    });
   }
 
 });
 
+// =========================
+// 强制可滚动（测试用）
+// =========================
+document.body.style.height = "200vh";
+
+
 
 /* =========================
-   4️⃣ 标题 fade（顶部消失）
+   4️⃣ 标题 fade
 ========================= */
 const title = document.querySelector(".title-main");
 const title2 = document.querySelector(".title-maincn");
@@ -499,5 +469,3 @@ window.addEventListener('scroll', () => {
 
   lastScrollY = current;
 });
-
-
