@@ -45,14 +45,13 @@ const switchImage = (src) => {
 // =========================
 function handleScroll() {
 
-  const currentScrollY = window.scrollY;
-  const delta = currentScrollY - lastScrollY2;
+  const scrollY = window.scrollY;
 
-  const goingDown = delta > 1;
-  const goingUp = delta < -1;
+  const forwardTrigger = window.innerHeight * 0.15;
+  const reverseTrigger = 50;
 
-  // ▶ 向下播放
-  if (goingDown && currentState === 0 && !isPlaying) {
+  // ▶ forward
+  if (scrollY > forwardTrigger && currentState === 0 && !isPlaying) {
 
     isPlaying = true;
     currentState = 1;
@@ -66,10 +65,11 @@ function handleScroll() {
     }, 1200);
   }
 
-  // ⏪ 向上播放（加锁版）
-  if (currentScrollY < 50 && currentState === 2 && !isPlaying && !reverseLock) {
+  // ⏪ reverse
+  if (scrollY < reverseTrigger && currentState === 2 && !isPlaying && !reverseLock) {
 
     reverseLock = true;
+
     isPlaying = true;
     currentState = -1;
 
@@ -84,18 +84,14 @@ function handleScroll() {
         currentState = 0;
         isPlaying = false;
 
-        // 🔓 延迟解锁（防止连续触发）
         setTimeout(() => {
           reverseLock = false;
-        }, 100);
+        }, 300);
 
       }, 1200);
 
     });
   }
-
-  // 👇 最后更新（一定要在最后）
-  lastScrollY2 = currentScrollY;
 }
 
 // =========================
@@ -355,7 +351,7 @@ window.addEventListener('scroll', () => {
   card.forEach((el, i) => {
 
     const rect = el.getBoundingClientRect();
-    const triggerPoint = window.innerHeight * 0.95;
+    const triggerPoint = window.innerHeight * 0.9;
 
     // 👉 进入视口
     if (rect.top < triggerPoint) {
@@ -379,7 +375,7 @@ window.addEventListener('scroll', () => {
       triggered.delete(el);
 
       el.style.opacity = '0';
-      el.style.transform = 'translateY(40px)';
+      el.style.transform = 'translateY(20px)';
     }
 
   });
