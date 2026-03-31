@@ -129,19 +129,27 @@ document.body.style.height = "200vh";
 const title = document.querySelector(".title-main");
 const title2 = document.querySelector(".title-maincn");
 const scrollbtn = document.querySelector(".btn");
+const herotitle2 = document.querySelector(".title-main2");
+const para2 = document.querySelector(".title-maincn2");
+
 
 window.addEventListener('scroll', () => {
-  if (!title || !title2) return;
+  if (!title || !title2 ||!herotitle2 ||!para2) return;
 
   if (window.scrollY > 80) {
     title.classList.add("hidden");
     title2.classList.add("hidden");
     scrollbtn.classList.add("hidden");
+    herotitle2.classList.remove("hidden");
+    para2.classList.remove("hidden");
 
   } else {
     title.classList.remove("hidden");
     title2.classList.remove("hidden");
     scrollbtn.classList.remove("hidden");
+    herotitle2.classList.add("hidden");
+    para2.classList.add("hidden");
+
   }
 });
 
@@ -151,89 +159,30 @@ window.addEventListener('scroll', () => {
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
   const exploreBtn = document.querySelector(".explorebtn");
+  const target = document.querySelector("#nextSection");
 
-  if (exploreBtn) {
+  if (exploreBtn && target) {
     exploreBtn.addEventListener("click", () => {
-      window.scrollBy({
-        top: window.innerHeight * 0.9,
+
+      const style = window.getComputedStyle(target);
+      const marginTop = parseInt(style.scrollMarginTop) || 0;
+
+      const targetScroll =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        marginTop;
+
+      window.scrollTo({
+        top: targetScroll,
         behavior: "smooth"
       });
+
     });
   }
 });
 
 
-/* =========================
-   6️⃣ fade-block 动效（核心修复版）
-========================= */
-const el = document.querySelector(".title-main2");
-const el2 = document.querySelector(".title-maincn2");
 
-let isReady = false;
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    isReady = true;
-  }, 200);
-});
-
-window.addEventListener("scroll", () => {
-  if (!el || !title2 || !isReady) return;
-
-  const rect = el.getBoundingClientRect();
-  const windowH = window.innerHeight;
-
-  const enterStart = windowH * 0.8; // 进入区
-  const leaveStart = windowH * 0.3;  // 离开区
-
-  // ✅ 在屏幕中间 → 显示
-  if (rect.top < enterStart && rect.bottom > leaveStart) {
-    el.classList.add("visible");
-    el.classList.remove("hidden");
-    el2.classList.add("visible");
-    el2.classList.remove("hidden");
-  }
-
-  // ✅ 滑出上方 → 隐藏
-  else if (rect.top < leaveStart) {
-    el.classList.remove("visible");
-    el.classList.add("hidden");
-    el2.classList.remove("visible");
-    el2.classList.add("hidden");
-  }
-
-  // ✅ 在屏幕下方（还没进入）→ 初始隐藏
-  else {
-    el.classList.remove("visible");
-    el.classList.remove("hidden");
-    el2.classList.remove("visible");
-    el2.classList.remove("hidden");
-  }
-});
-
-
-const heroTitle2 = document.querySelector(".hero-title2");
-const heroTitle = document.querySelector(".hero-title");
-
-function handleTitleToggle(scrollY) {
-
-  if (!heroTitle || !heroTitle2) return;
-
-  if (scrollY > 120) {
-    // 👇 hero1 消失
-    heroTitle.classList.add("hidden");
-
-    // 👇 hero2 出现
-    heroTitle2.classList.add("visible");
-
-  } else {
-    // 👇 hero1 出现
-    heroTitle.classList.remove("hidden");
-
-    // 👇 hero2 消失
-    heroTitle2.classList.remove("visible");
-  }
-}
 
 
 const btn = document.querySelector('.scroll-btn');
@@ -330,8 +279,70 @@ btn.addEventListener('click', () => {
 });
 
 
+function isMobile() {
+  return window.innerWidth < 450;
+  
+}
 
+btn.addEventListener('click', () => {
 
+  const target = document.querySelector('#nextSection');
+
+  // 👉 射线动画（保留）
+  animateLine();
+
+  setTimeout(() => {
+
+    if (isMobile()) {
+
+      // =========================
+      // 📱 MOBILE（专用 scroll）
+      // =========================
+
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    } else {
+
+      // =========================
+      // 💻 DESKTOP（保持你原逻辑）
+      // =========================
+
+      const startScroll = window.scrollY;
+      const targetScroll =
+        target.getBoundingClientRect().top + window.scrollY;
+
+      const distance = targetScroll - startScroll;
+      const duration = 1200;
+
+      let startTime = null;
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function animateScroll(time) {
+        if (!startTime) startTime = time;
+
+        const elapsed = time - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = easeOutCubic(progress);
+
+        window.scrollTo(0, startScroll + distance * ease);
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      }
+
+      requestAnimationFrame(animateScroll);
+    }
+
+  }, 80);
+
+});
 
 const card = document.querySelectorAll('.card');
 
