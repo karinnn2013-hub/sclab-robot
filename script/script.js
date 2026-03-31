@@ -351,7 +351,7 @@ window.addEventListener('scroll', () => {
   card.forEach((el, i) => {
 
     const rect = el.getBoundingClientRect();
-    const triggerPoint = window.innerHeight * 0.9;
+    const triggerPoint = window.innerHeight * 0.99;
 
     // 👉 进入视口
     if (rect.top < triggerPoint) {

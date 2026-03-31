@@ -1626,6 +1626,9 @@ spline-viewer {
               display: none;
             }
         
+            #triggerSection{
+              display:none;
+            }
            
            /* none show */
         
@@ -1639,7 +1642,7 @@ spline-viewer {
         
             .nav-mobile {
               position: fixed;
-              top: 5vh;              /* 👉 顶部 10% 空间 */
+              top: 2vh;              /* 👉 顶部 10% 空间 */
               left: 0;
               width: 90vw;
             
@@ -1662,37 +1665,25 @@ spline-viewer {
         
         
             .hero{
-              max-height:30vh;
+              max-height:100vh;
               position: sticky;
               display: block;
+              margin-bottom: 100px;
               background-color: rgba(0, 0, 0, 0);
+
             }
                
             .hero-title{
               margin-top: 20vh;
               padding-left: 20px;
               padding-right: 10px;
-              animation: heroTitleEntrance 1.5s cubic-bezier(.22,1,.36,1) forwards;
             }
             
             section{
               background-color: rgba(0, 0, 0, 0);
             }
             
-          
-          @keyframes heroTitleEntrance {
-          
-              from{
-                opacity:0;
-                transform: translateX(20px);
-              }
-            
-              to{
-                opacity:1;
-                transform: translateX(0);
-              }
-            
-          }
+       
             .title-main {
               height: 6vh;
             }
@@ -1710,7 +1701,7 @@ spline-viewer {
               padding-left: 20px;
               padding-right: 10px;
               opacity: 1;
-              z-index: 30;
+              z-index: 50;
               position: absolute;
               display: flex;
               flex-direction: column;
@@ -1863,7 +1854,7 @@ spline-viewer {
           
            animation: spin 3s linear infinite;
            top: 50%;
-            left: 38%;
+            left: 30%;
           }
           
           
@@ -1982,7 +1973,7 @@ spline-viewer {
           .card-3 {
             grid-column: 2 / span 3;
             grid-row: 9 / span 4;
-            margin-top: 25%;
+            margin-top: 30%;
             margin-bottom: -25%;
             opacity: 0.6;
             width: 110%;
@@ -2015,10 +2006,10 @@ spline-viewer {
           }
         
           .card-4:hover{
-            margin-left: 15%;
-            margin-right: -15%;
-            margin-top: -20%;
-            margin-bottom: -20%;
+            margin-left: 10%;
+            margin-right: -10%;
+            margin-top: -25%;
+            margin-bottom: -10%;
             opacity: 0.6;
           }
         
@@ -2030,8 +2021,8 @@ spline-viewer {
             transition: opacity 0.4s ease, transform 0.4s ease;
           
            animation: spin 3s linear infinite;
-           top: 80%;
-           left: 42%;
+           top: 65%;
+           left: 45%;
           }
           
           
