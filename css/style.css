@@ -1541,6 +1541,10 @@ spline-viewer {
     scroll-margin-top: 80px;
   }
 
+  #heromedia{
+    display: none;
+  }
+
 
   /* mobile */
 @media (max-width: 450px) {
@@ -1549,6 +1553,10 @@ spline-viewer {
               overflow-y: auto;
               -webkit-overflow-scrolling: touch;
              }
+
+             #heromedia{
+              display: block;
+            }
 
 
              #nextSection {

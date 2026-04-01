@@ -361,7 +361,7 @@ window.addEventListener('scroll', () => {
         triggered.add(el);
 
         // 🔥 stagger delay
-        const delay = i * 50;
+        const delay = i * 20;
 
         setTimeout(() => {
           el.style.opacity = '1';
@@ -371,7 +371,7 @@ window.addEventListener('scroll', () => {
       }
 
     } else {
-      // 👉 scroll 回去消失
+      // 👉 scroll back and disappear
       triggered.delete(el);
 
       el.style.opacity = '0';

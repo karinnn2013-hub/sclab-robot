@@ -21,7 +21,7 @@
     
         <!-- 中：实验室名称 -->
         <div class="nav-center">
-            <a href="./index.html">
+            <a href="./scroll.html">
                 <img src="./assets/lab-name.svg" alt="Smart City Lab">
                </a> 
           
@@ -63,6 +63,16 @@
                     <div class="splineafter"></div>
                 </div>
     
+                <div id="heromedia">
+    
+                    <div id="scrollvideo"> 
+                        <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.72/build/spline-viewer.js"></script>
+                        <spline-viewer url="https://prod.spline.design/VxylDYgy5NiSa3YW/scene.splinecode"></spline-viewer>
+                    </div>
+                   
+                    
+                </div>
+
              
                 <!-- title -->
                 <div class="hero-title">
@@ -86,28 +96,11 @@
                     <img src="./assets/title-2.svg" class="title-main2 hidden">
                     <img src="./assets/para1.svg" class="title-maincn2 hidden">
                 </div>
-                                         
-                <div class="image-column">
-                    <img id="imageElement" src="./assets/intro-last.png" />
-                  </div>
+    
 
             </section>
 
-                      
-            <section id="scroll-section" class="scroll-container">
-        
-                <div class="scroll-indicators">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                </div>
-                
-            </section>
-
-
-            
-                
-            
+                             
     
               <section class="triggerSection" id="triggerSection">
     
@@ -140,7 +133,7 @@
     
                     <span class="icon">
                         <div class="img-wrapper">
-                            <img src="./assets/icon1.png" class="ui">
+                            <img src="./assets/icon2.png" class="ui">
                         </div>                
                     </span>
                
@@ -260,7 +253,24 @@
               <div class="cursor-layer">
                 <div class="custom-cursor"></div>
               </div>
-            <script src="./script/script.js"></script>
+
+              <script>
+                function isMobile() {
+                  return window.innerWidth <= 450;
+                }
+              
+                const script = document.createElement("script");
+              
+                if (isMobile()) {
+                  script.src = "./script/mobile.js";
+                  console.log("📱 load mobile js");
+                } else {
+                  script.src = "./script/script.js";
+                  console.log("🖥 load desktop js");
+                }
+              
+                document.body.appendChild(script);
+              </script>
 
        
         

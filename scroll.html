@@ -41,20 +41,16 @@
 
     <body>
 
-
-        <div class="image-column">
-            <img id="imageElement" src="./assets/intro-last.png" />
-          </div>
-          
-        <section id="scroll-section" class="scroll-container">
-
-            <div class="scroll-indicators">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+        <div id="spline-layer">
+    
+            <div id="spline-desktop"> 
+                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.72/build/spline-viewer.js"></script>
+                <spline-viewer url="https://prod.spline.design/VxylDYgy5NiSa3YW/scene.splinecode"></spline-viewer>
             </div>
+           
             
-        </section>
+            <div class="splineafter"></div>
+        </div>
 
         <script src="./script/script.js"></script>
 
