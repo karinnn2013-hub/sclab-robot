@@ -6,9 +6,9 @@ console.log("📱 MOBILE MODE");
 const imageElement = document.getElementById("imageElement");
 const trigger = document.getElementById("trigger-zone");
 
-const intro = "/assets/intro-last.png";
-const forward = "/assets/scroll.gif";
-const reverse = "/assets/scroll-reverse.gif";
+const intro = "./assets/intro-last.png";
+const forward = "./assets/scroll.gif";
+const reverse = "./assets/scroll-reverse.gif";
 
 // 防止重复触发
 let state = "intro";
@@ -61,35 +61,48 @@ function finishLoading() {
 const title = document.querySelector(".title-main");
 const title2 = document.querySelector(".title-maincn");
 const scrollbtn = document.querySelector(".btn");
+
 const herotitle2 = document.querySelector(".title-main2");
 const para2 = document.querySelector(".title-maincn2");
 
+const scrollSection = document.getElementById("scroll-section");
 
-window.addEventListener('scroll', () => {
-  if (!title || !title2 ||!herotitle2 ||!para2) return;
+// =========================
+// TITLE CONTROL (MOBILE)
+// =========================
 
-  if (window.scrollY > 80) {
-    title.classList.add("hidden");
-    title2.classList.add("hidden");
-    scrollbtn.classList.add("hidden");
-    herotitle2.classList.remove("hidden");
-    para2.classList.remove("hidden");
+const rect = scrollSection.getBoundingClientRect();
+const windowH = window.innerHeight;
 
-  } else {
-    title.classList.remove("hidden");
-    title2.classList.remove("hidden");
-    scrollbtn.classList.remove("hidden");
-    herotitle2.classList.add("hidden");
-    para2.classList.add("hidden");
+// 👉 计算 hero 内进度（0 → 1）
+let progress = -rect.top / (rect.height - windowH);
 
-  }
-});
+// clamp
+progress = Math.max(0, Math.min(1, progress));
 
 
+// 🔥 关键阈值（你可以微调）
+const threshold = 0.15;
 
 
+// 👉 向下滑：隐藏 title1，显示 title2
+if (progress > threshold) {
 
-function isMobile() {
-  return window.innerWidth < 450;
-  
+  title?.classList.add("hidden");
+  title2?.classList.add("hidden");
+  scrollbtn?.classList.add("hidden");
+
+  herotitle2?.classList.remove("hidden");
+  para2?.classList.remove("hidden");
+
+} else {
+
+  // 👉 向上滑：恢复
+  title?.classList.remove("hidden");
+  title2?.classList.remove("hidden");
+  scrollbtn?.classList.remove("hidden");
+
+  herotitle2?.classList.add("hidden");
+  para2?.classList.add("hidden");
+
 }
