@@ -13,41 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// =========================
-// 1️⃣ 关闭 desktop 系统
-// =========================
-function disableDesktop() {
 
-  const spline = document.getElementById("spline-layer");
-  const desktopVideo = document.getElementById("scrollVideo");
-
-  if (spline) spline.style.display = "none";
-  if (desktopVideo) desktopVideo.pause();
-
-}
-
-
-// =========================
-// 2️⃣ HERO（用 GIF / 静态图）
-// =========================
-function setupHero() {
-
-  const hero = document.getElementById("heromedia");
-
-  if (!hero) return;
-
-  // 👉 推荐用 GIF 或 MP4（轻量）
-  hero.src = "./assets/scroll.gif";
-
-  hero.style.opacity = 0;
-
-  // 淡入
-  setTimeout(() => {
-    hero.style.transition = "opacity 0.8s ease";
-    hero.style.opacity = 1;
-  }, 100);
-
-}
+viewer.addEventListener("load", () => {
+    viewer.classList.add("loaded");
+  });
 
 
 // =========================

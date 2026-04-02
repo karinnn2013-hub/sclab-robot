@@ -468,7 +468,6 @@ spline-viewer {
     transition: transform .4s ease;
     left: 0;
     z-index: 1;
-    pointer-events: none;
     position:absolute;
 }
     
@@ -1546,6 +1545,10 @@ spline-viewer {
   }
 
 
+   #spline-mobile{
+     display:none;
+   }
+
   /* mobile */
 @media (max-width: 450px) {
 
@@ -1554,8 +1557,9 @@ spline-viewer {
               -webkit-overflow-scrolling: touch;
              }
 
-             #heromedia{
-              display: block;
+            
+            spline-viewer.loaded {
+              opacity: 1;
             }
 
 
@@ -1563,10 +1567,7 @@ spline-viewer {
               scroll-margin-top: -250vh;
             }
 
-             #spline-layer {
-               display: none;
-              pointer-events: none;  /* 防止挡住 scroll */
-            }
+             
              
              /* 👇 scroll 主容器 */
               .scroll-container {
@@ -1582,31 +1583,21 @@ spline-viewer {
               top: 0;
               left: 0;
               }
-    
-           
 
-             #spline-desktop {
-               display:none
-             }
-          
-            
-            /* 左边 GIF 区域 */
-            .image-column {
-              position: sticky;
-              top: 0;
-              height: 100vh;
-            
-              display: flex;
-              align-items: center;
-              justify-content: center;
+
+            .hero{
+               z-index: 999;
             }
+    
+            #spline-mobile spline-viewer{
+                 display:block;
+                 z-index: 999;
+               }
+             
             
-            /* GIF */
-            #imageElement {
-              width: 100%;
-              transition: opacity 0.35s ease;
-              will-change: opacity;
-              }
+               #spline-desktop{
+                display:none;
+               }
             
           
             #triggerSection{
@@ -1617,10 +1608,7 @@ spline-viewer {
               display: none !important;
             }
         
-           /* none show */
-            #spline-desktop {
-              display: none;
-            }
+         
             
             .nav{
               display: none;
@@ -1640,7 +1628,9 @@ spline-viewer {
            
            /* none show */
         
-        
+             spline-viewer{
+               z-index:999;
+             }
               html, body {
                  margin: 0;
                  overflow-x: hidden;
@@ -1667,10 +1657,7 @@ spline-viewer {
               object-fit: contain;
             }
         
-            #spline-layer{
-              display:none;
-          }
-        
+    
         
             .hero{
               max-height:100vh;

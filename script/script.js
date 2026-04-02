@@ -1,122 +1,28 @@
 console.log("JS running");
 
-document.addEventListener("mousemove", (e) => {
-  const cursor = document.querySelector(".custom-cursor");
-  if (!cursor) return;
 
-  cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-});
+console.log("🔁 spline switch (opacity mode)");
 
-const intro = './assets/intro-last.png';
-const scrollForward = './assets/scroll.gif';
-const scrollReverse = './assets/scroll-reverse.gif';
-const finalFrame = './assets/scroll-last.png';
-
-// =========================
-// PRELOAD
-// =========================
-[intro, scrollForward, scrollReverse, finalFrame].forEach(src => {
-  const img = new Image();
-  img.src = src;
-});
-
-// =========================
-// DOM
-// =========================
-const imageElement = document.getElementById('imageElement');
-
-// =========================
-// STATE
-// =========================
-let currentState = 0; 
-let isPlaying = false;
-let lastScrollY2 = window.scrollY;
-let reverseLock = false; // 🔒 防止重复触发
-
-// =========================
-// SWITCH IMAGE
-// =========================
-const switchImage = (src) => {
-  imageElement.src = src;
-};
-
-// =========================
-// SCROLL LOGIC（抽出来）
-// =========================
-function handleScroll() {
-
-  const scrollY = window.scrollY;
-
-  const forwardTrigger = window.innerHeight * 0.15;
-  const reverseTrigger = 50;
-
-  // ▶ forward
-  if (scrollY > forwardTrigger && currentState === 0 && !isPlaying) {
-
-    isPlaying = true;
-    currentState = 1;
-
-    switchImage(scrollForward + "?t=" + Date.now());
-
-    setTimeout(() => {
-      switchImage(finalFrame);
-      currentState = 2;
-      isPlaying = false;
-    }, 1200);
-  }
-
-  // ⏪ reverse
-  if (scrollY < reverseTrigger && currentState === 2 && !isPlaying && !reverseLock) {
-
-    reverseLock = true;
-
-    isPlaying = true;
-    currentState = -1;
-
-    imageElement.src = "";
-
-    requestAnimationFrame(() => {
-
-      switchImage(scrollReverse + "?t=" + Date.now());
-
-      setTimeout(() => {
-        switchImage(intro);
-        currentState = 0;
-        isPlaying = false;
-
-        setTimeout(() => {
-          reverseLock = false;
-        }, 300);
-
-      }, 1200);
-
-    });
-  }
+function isMobile() {
+  return window.matchMedia("(max-width: 450px)").matches;
 }
 
-// =========================
-// THROTTLE（关键）
-// =========================
-let ticking = false;
+window.addEventListener("load", () => {
 
-window.addEventListener('scroll', () => {
+  const desktop = document.getElementById("spline-desktop");
+  const mobile = document.getElementById("spline-mobile");
 
-  if (!ticking) {
+  if (!desktop || !mobile) return;
 
-    requestAnimationFrame(() => {
-      handleScroll();
-      ticking = false;
-    });
-
-    ticking = true;
+  if (isMobile()) {
+    mobile.classList.add("active");
+    console.log("📱 mobile spline active");
+  } else {
+    desktop.classList.add("active");
+    console.log("🖥 desktop spline active");
   }
 
 });
-// =========================
-// 强制可滚动（测试用）
-// =========================
-document.body.style.height = "200vh";
-
 
 
 /* =========================
