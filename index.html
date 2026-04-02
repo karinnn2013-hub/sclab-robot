@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html lang="en">
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -47,22 +47,7 @@
 
     
 
-            <section class="hero">
-                
-                <div id="spline-layer"> 
-
-                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.73/build/spline-viewer.js"></script>
-
-                     <!-- desktop -->
-                    <spline-viewer id="spline-desktop"
-                      url="https://prod.spline.design/VxylDYgy5NiSa3YW/scene.splinecode">
-                    </spline-viewer>
-                  
-                    <!-- mobile -->
-                    <spline-viewer url="https://prod.spline.design/wLHJC3xseFznaSC7/scene.splinecode"></spline-viewer>
-                    
-                    
-                </div>
+            <section class="hero hero-scroll">
 
                 <!-- title -->
                 <div class="hero-title">
@@ -86,13 +71,60 @@
                     <img src="./assets/title-2.svg" class="title-main2 hidden">
                     <img src="./assets/para1.svg" class="title-maincn2 hidden">
                 </div>
+
+                
+                <div id="spline-layer" class="hero-sticky"> 
+
+                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.73/build/spline-viewer.js"></script>
+
+                     <!-- desktop -->
+                    <spline-viewer id="spline-desktop"
+                      url="https://prod.spline.design/VxylDYgy5NiSa3YW/scene.splinecode">
+                    </spline-viewer>
+                  
+                  
+                </div>
+
+
                              
                 
             </section>
 
-                             
+
+            <section id="scroll-section">
+
+                <div class="hero-title">
+                    <img src="./assets/title-main.svg" class="title-main">
+                    <img src="./assets/title-maincn.svg" class="title-maincn">
+                
+                
+                          <!-- button -->
+                    <div class="btn">
+                        <a href="" class="scrollIndicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            （SCROLL）
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-title2">
+                    <img src="./assets/title-2.svg" class="title-main2 hidden">
+                    <img src="./assets/para1.svg" class="title-maincn2 hidden">
+                </div>
+                
+                <div class="sticky-wrapper">
+                  <img id="imageElement" src="./assets/intro-last.png" />
+                </div>
+              
+                <div id="trigger-zone"></div>
+
+              </section>
+                                         
     
-              <section class="triggerSection" id="triggerSection">
+              <section class="triggerSection next-section" id="triggerSection" style="height:100vh; background:rgb(86, 86, 86);">
     
                 <button class="scroll-btn" data-target="#nextSection">
                     <span class="inner"></span>

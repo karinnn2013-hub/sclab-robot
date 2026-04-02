@@ -1,84 +1,95 @@
 console.log("📱 MOBILE MODE");
 
 // =========================
-// INIT
+// GLOBAL VAR
 // =========================
-document.addEventListener("DOMContentLoaded", () => {
+const imageElement = document.getElementById("imageElement");
+const trigger = document.getElementById("trigger-zone");
 
-  disableDesktop();
-  setupHero();
-  setupScrollReveal();
-  finishLoading();
+const intro = "/assets/intro-last.png";
+const forward = "/assets/scroll.gif";
+const reverse = "/assets/scroll-reverse.gif";
 
+// 防止重复触发
+let state = "intro";
+
+const observer = new IntersectionObserver((entries) => {
+
+  entries.forEach(entry => {
+
+    if (entry.isIntersecting) {
+      // 👉 进入 trigger → 播放 forward
+      if (state !== "forward") {
+        imageElement.src = forward + "?t=" + Date.now();
+        state = "forward";
+        console.log("▶ forward");
+      }
+
+    } else {
+      // 👉 离开 → 播放 reverse
+      if (state !== "reverse") {
+        imageElement.src = reverse + "?t=" + Date.now();
+        state = "reverse";
+        console.log("◀ reverse");
+      }
+    }
+
+  });
+
+}, {
+  threshold: 0.3   // 👈 控制触发点
+});
+
+observer.observe(trigger);
+
+
+// =========================
+// LOADING END
+// =========================
+function finishLoading() {
+  window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+    console.log("✅ mobile ready");
+  });
+}
+
+
+// =========================
+// DISABLE DESKTOP
+
+
+const title = document.querySelector(".title-main");
+const title2 = document.querySelector(".title-maincn");
+const scrollbtn = document.querySelector(".btn");
+const herotitle2 = document.querySelector(".title-main2");
+const para2 = document.querySelector(".title-maincn2");
+
+
+window.addEventListener('scroll', () => {
+  if (!title || !title2 ||!herotitle2 ||!para2) return;
+
+  if (window.scrollY > 80) {
+    title.classList.add("hidden");
+    title2.classList.add("hidden");
+    scrollbtn.classList.add("hidden");
+    herotitle2.classList.remove("hidden");
+    para2.classList.remove("hidden");
+
+  } else {
+    title.classList.remove("hidden");
+    title2.classList.remove("hidden");
+    scrollbtn.classList.remove("hidden");
+    herotitle2.classList.add("hidden");
+    para2.classList.add("hidden");
+
+  }
 });
 
 
 
-viewer.addEventListener("load", () => {
-    viewer.classList.add("loaded");
-  });
 
 
-// =========================
-// 3️⃣ CARD 滑入（核心体验）
-// =========================
-function setupScrollReveal() {
-
-  const cards = document.querySelectorAll(".card");
-
-  if (!cards.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-      }
-
-    });
-  }, {
-    threshold: 0.15,
-    rootMargin: "0px 0px -10% 0px"
-  });
-
-  cards.forEach(card => observer.observe(card));
-
-}
-
-
-// =========================
-// 4️⃣ 防卡顿 scroll fallback（iOS关键）
-// =========================
-let ticking = false;
-
-function safeScroll(callback) {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      callback();
-      ticking = false;
-    });
-    ticking = true;
-  }
-}
-
-window.addEventListener("scroll", () => {
-  safeScroll(() => {
-    // 👉 这里可以以后加轻量逻辑（现在先空）
-  });
-}, { passive: true });
-
-
-// =========================
-// 5️⃣ PRELOAD 结束
-// =========================
-function finishLoading() {
-
-  window.addEventListener("load", () => {
-
-    document.body.classList.add("loaded");
-
-    console.log("✅ mobile ready");
-
-  });
-
+function isMobile() {
+  return window.innerWidth < 450;
+  
 }

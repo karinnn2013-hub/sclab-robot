@@ -239,7 +239,6 @@ section{
 
 .hero{
     min-height:100vh;
-    position: relative;
 }
      
 .hero-title{
@@ -371,8 +370,6 @@ section{
     position:absolute;
     top:0%;
     left:0%;
-
-    transform:translate(-50%,-50%);
     z-index:2;  
     
 }
@@ -449,13 +446,7 @@ section{
 }
 
 
-spline-viewer {
-    width: 100%;
-    height: 120vh;
-    z-index: 1;
-    position:absolute;
 
-}
 
 .splineafter{
     height: 100vh;
@@ -464,27 +455,11 @@ spline-viewer {
 
 #spline-layer{
     width:100%;
-    height:120vh;
     transition: transform .4s ease;
     left: 0;
     z-index: 1;
-    position:absolute;
 }
     
-    /* 默认 fixed */
-    
-#spline-layer.fixed{
-    position: fixed;
-    top:0;
-    left:0;
-}
-    
-    /* 进入 section 后 */
-    
-#spline-layer.sticky{
-    position: sticky;
-    top:0;
-}
 
 
 
@@ -520,7 +495,6 @@ spline-viewer {
 
 .hero{
      height:100vh;
-     position:relative;
      background-color: #000;
 }
 
@@ -1549,6 +1523,22 @@ spline-viewer {
      display:none;
    }
 
+
+   spline-viewer {
+    width: 100%;
+    height: 120vh;
+    z-index: 1;
+    position:absolute;
+  }
+
+  #scroll-section{
+    display:none;
+  }
+
+  #trigger-zone{
+    display:none;
+  }
+
   /* mobile */
 @media (max-width: 450px) {
 
@@ -1556,45 +1546,97 @@ spline-viewer {
               overflow-y: auto;
               -webkit-overflow-scrolling: touch;
              }
+             
+             #spline-mobile {
+              display: block;
+            }
 
+
+
+
+            .hero{
+              display:none;
+            }
+            #scroll-section {
+              height: 120vh; /* 控制动画长度 */
+              display: block;
+              position:relative;
+            }
             
+            .sticky-wrapper {
+              position: sticky;
+              top: 0;
+              height: 100vh;
+            }
+            
+            #imageElement {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              transition: opacity 0.3s ease;
+            }
+
+
+            #trigger-zone {
+              position: relative;
+              height: 5vh;  /* 控制触发敏感度 */
+              width: 100%;
+              display: block;
+              background-color: #8aa5ff00;
+            }
+
+
+
+          spline-viewer {
+           height: 100vh;        
+          }
+            
+
+             
             spline-viewer.loaded {
               opacity: 1;
             }
 
-
-             #nextSection {
-              scroll-margin-top: -250vh;
-            }
-
-             
-             
-             /* 👇 scroll 主容器 */
-              .scroll-container {
-                 position: absolute;
-             }
-
-             #scroll-section{
-              opacity: 1;
-              display: block;
-              position: absolute;
-              width:100%;
-              height: 200vh;
-              top: 0;
-              left: 0;
-              }
-
-
-            .hero{
-               z-index: 999;
-            }
-    
-            #spline-mobile spline-viewer{
-                 display:block;
-                 z-index: 999;
-               }
-             
             
+        
+            /* sticky 锁住画面 */
+            .hero-sticky {
+              position: sticky;
+              top: 0;
+              height: 100vh;
+              overflow: hidden;
+            }
+        
+
+            .hero-title {
+              position: absolute;
+              top: 40vh;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              z-index: 10;
+            }
+
+            /* spline */
+            spline-viewer {
+              width: 100%;
+              height: 100%;
+              display: block;
+              transition: transform 0.2s linear, opacity 0.2s linear;
+            }
+        
+            /* next section */
+            .next-section {
+              height: 120vh;
+              background: white;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 30px;
+            }
+            
+            
+
+                    
                #spline-desktop{
                 display:none;
                }
@@ -1628,9 +1670,7 @@ spline-viewer {
            
            /* none show */
         
-             spline-viewer{
-               z-index:999;
-             }
+        
               html, body {
                  margin: 0;
                  overflow-x: hidden;
@@ -1657,17 +1697,7 @@ spline-viewer {
               object-fit: contain;
             }
         
-    
-        
-            .hero{
-              max-height:100vh;
-              position: sticky;
-              display: block;
-              margin-bottom: 100px;
-              background-color: rgba(0, 0, 0, 0);
-
-            }
-               
+                   
             .hero-title{
               margin-top: 20vh;
               padding-left: 20px;
@@ -1697,7 +1727,7 @@ spline-viewer {
               padding-right: 10px;
               opacity: 1;
               z-index: 50;
-              position: absolute;
+              position: relative;
               display: flex;
               flex-direction: column;
               align-items: flex-start;
@@ -1736,11 +1766,8 @@ spline-viewer {
               opacity:1;
               transform:translateY(0);
               transition: all .6s cubic-bezier(.22,1,.36,1);
-              position:absolute;
               top:0%;
               left:0%;
-            
-              transform:translate(-50%,-50%);
               z-index:2;  
               
             }

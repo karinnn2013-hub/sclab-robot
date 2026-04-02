@@ -1,59 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>PV Cleaning Robot</title>
-        
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600&display=swap" rel="stylesheet">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mobile Scroll Spline Test</title>
 
-        <style>
-            html, body {
-              margin: 0;
-              padding: 0;
-              width: 100%;
-              height: 100%;
-              overflow: hidden;
-              background: black;
-            }
-        
-            .spline-container {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100vw;
-              height: 100vh;
-            }
-        
-            spline-viewer {
-              width: 100%;
-              height: 100%;
-              display: block;
-            }
-          </style>
-     </head>
+  <!-- Spline -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.68/build/spline-viewer.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* HERO scroll area */
+    .hero-scroll {
+      height: 130vh; /* 👈 控制动画长度 */
+      background: black;
+    }
+
+    /* sticky 锁住画面 */
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* spline */
+    spline-viewer {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: transform 0.2s linear, opacity 0.2s linear;
+    }
+
+    /* next section */
+    .next-section {
+      height: 120vh;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <section class="hero-scroll">
+    <div class="hero-sticky">
+
+      <spline-viewer id="spline"
+        url="https://prod.spline.design/wLHJC3xseFznaSC7/scene.splinecode">
+      </spline-viewer>
+
+    </div>
+  </section>
+
+  <!-- NEXT -->
+  <section class="next-section">
+    NEXT SECTION
+  </section>
 
 
+  <script>
+    // 👉 只在 mobile 测试
+    if (window.matchMedia("(max-width: 768px)").matches) {
 
-    <body>
+      const section = document.querySelector(".hero-scroll");
+      const spline = document.getElementById("spline");
 
-        <div id="spline-layer">
-    
-           
-            <div id="scrollvideo"> 
-                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.73/build/spline-viewer.js"></script>
-                <spline-viewer url="https://prod.spline.design/wLHJC3xseFznaSC7/scene.splinecode"></spline-viewer>
-            </div>
-           
-           
-            
-            <div class="splineafter"></div>
-        </div>
+      window.addEventListener("scroll", () => {
 
-        
+        const rect = section.getBoundingClientRect();
+        const windowH = window.innerHeight;
 
-    </body>
+        // 🔥 计算 progress（0 → 1）
+        const progress = Math.min(
+          Math.max((windowH - rect.top) / (windowH + rect.height), 0),
+          1
+        );
 
-    
+        // =========================
+        // 🎬 动画阶段
+        // =========================
 
+        if (progress < 0.3) {
+          // intro
+          const t = progress / 0.3;
+
+          spline.style.transform = `scale(${1 + t * 0.1})`;
+          spline.style.opacity = 0.5 + t * 0.5;
+
+        } else if (progress < 0.8) {
+          // main
+          const t = (progress - 0.3) / 0.5;
+
+          spline.style.transform = `scale(${1.1 + t * 0.1})`;
+
+        } else {
+          // outro
+          const t = (progress - 0.8) / 0.2;
+
+          spline.style.transform = `scale(${1.2 - t * 0.1})`;
+          spline.style.opacity = 1 - t * 0.3;
+        }
+
+        // 👉 debug（可以删）
+        // console.log(progress.toFixed(2));
+
+      });
+
+    }
+  </script>
+
+</body>
 </html>
