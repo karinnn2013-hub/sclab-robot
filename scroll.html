@@ -1,123 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mobile Scroll Spline Test</title>
-
-  <!-- Spline -->
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.68/build/spline-viewer.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* HERO scroll area */
-    .hero-scroll {
-      height: 130vh; /* 👈 控制动画长度 */
-      background: black;
-    }
-
-    /* sticky 锁住画面 */
-    .hero-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* spline */
-    spline-viewer {
-      width: 100%;
-      height: 100%;
-      display: block;
-      transition: transform 0.2s linear, opacity 0.2s linear;
-    }
-
-    /* next section */
-    .next-section {
-      height: 120vh;
-      background: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 30px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>AI Core - Permanent Reconstruction</title>
+    <style>
+        body { margin: 0; background-color: #000; overflow: hidden; }
+        #ui { 
+            position: absolute; top: 30px; left: 30px; 
+            color: rgba(255,255,255,0.8); font-family: 'Courier New', monospace; 
+            font-size: 10px; letter-spacing: 2px; z-index: 10;
+            line-height: 1.6;
+        }
+    </style>
 </head>
-
 <body>
-
-  <!-- HERO -->
-  <section class="hero-scroll">
-    <div class="hero-sticky">
-
-      <spline-viewer id="spline"
-        url="https://prod.spline.design/wLHJC3xseFznaSC7/scene.splinecode">
-      </spline-viewer>
-
+    <div id="ui">
+        // PROTOCOL: FINAL_ASSEMBLY<br>
+        // STATUS: RECONSTRUCTION_COMPLETE<br>
+        // MODE: PERSISTENT_VIEW
     </div>
-  </section>
 
-  <!-- NEXT -->
-  <section class="next-section">
-    NEXT SECTION
-  </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+    <script id="vertexShader" type="x-shader/x-vertex">
+        varying vec3 vPosition;
+        void main() {
+            vPosition = position;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    </script>
 
-  <script>
-    // 👉 只在 mobile 测试
-    if (window.matchMedia("(max-width: 768px)").matches) {
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        varying vec3 vPosition;
+        uniform float uBuildY;
+        uniform float uTime;
 
-      const section = document.querySelector(".hero-scroll");
-      const spline = document.getElementById("spline");
+        void main() {
+            float yPos = vPosition.y;
+            float dist = abs(yPos - uBuildY);
+            
+            float alpha = 0.0;
+            
+            // Logic: Everything below the current uBuildY stays at 30% opacity
+            if (yPos < uBuildY) {
+                alpha = 0.3; 
+            } 
+            
+            // The active "laser" edge
+            if (dist < 0.25) {
+                float flicker = 0.8 + 0.2 * sin(uTime * 40.0);
+                alpha = 1.0 * flicker;
+            }
 
-      window.addEventListener("scroll", () => {
+            gl_FragColor = vec4(1.0, 1.0, 1.0, alpha);
+        }
+    </script>
 
-        const rect = section.getBoundingClientRect();
-        const windowH = window.innerHeight;
+    <script>
+        let scene, camera, renderer, masterGroup;
+        let buildProgress = -14; // Start below the geometry
+        const MAX_BUILD_HEIGHT = 12.5; // Top of the largest shape
 
-        // 🔥 计算 progress（0 → 1）
-        const progress = Math.min(
-          Math.max((windowH - rect.top) / (windowH + rect.height), 0),
-          1
-        );
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(35, 20, 35);
 
-        // =========================
-        // 🎬 动画阶段
-        // =========================
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.body.appendChild(renderer.domElement);
 
-        if (progress < 0.3) {
-          // intro
-          const t = progress / 0.3;
+            masterGroup = new THREE.Group();
+            scene.add(masterGroup);
 
-          spline.style.transform = `scale(${1 + t * 0.1})`;
-          spline.style.opacity = 0.5 + t * 0.5;
+            const shaderMat = new THREE.ShaderMaterial({
+                uniforms: {
+                    uBuildY: { value: -14 },
+                    uTime: { value: 0 }
+                },
+                vertexShader: document.getElementById('vertexShader').textContent,
+                fragmentShader: document.getElementById('fragmentShader').textContent,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
 
-        } else if (progress < 0.8) {
-          // main
-          const t = (progress - 0.3) / 0.5;
+            // --- Abstract Technical Geometry ---
+            
+            // 1. The Geodesic Shell
+            const shellGeo = new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(10, 1));
+            const shell = new THREE.LineSegments(shellGeo, shaderMat);
+            masterGroup.add(shell);
 
-          spline.style.transform = `scale(${1.1 + t * 0.1})`;
+            // 2. The Vertical Data Arrays (Cylinders)
+            for(let i=0; i<3; i++) {
+                const ringGeo = new THREE.EdgesGeometry(new THREE.TorusGeometry(7, 0.05, 10, 60));
+                const ring = new THREE.LineSegments(ringGeo, shaderMat);
+                ring.rotation.x = (i * Math.PI) / 3;
+                ring.userData.rotSpeed = 0.005 + (i * 0.005);
+                masterGroup.add(ring);
+            }
 
-        } else {
-          // outro
-          const t = (progress - 0.8) / 0.2;
+            // 3. The Core Cube
+            const coreGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(4, 4, 4));
+            const core = new THREE.LineSegments(coreGeo, shaderMat);
+            masterGroup.add(core);
 
-          spline.style.transform = `scale(${1.2 - t * 0.1})`;
-          spline.style.opacity = 1 - t * 0.3;
+            animate();
         }
 
-        // 👉 debug（可以删）
-        // console.log(progress.toFixed(2));
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = Date.now() * 0.001;
 
-      });
+            // Build-up happens once and then stops at the peak
+            if (buildProgress < MAX_BUILD_HEIGHT) {
+                buildProgress += 0.06;
+            } else {
+                // Keep it exactly at the top for infinite display
+                buildProgress = MAX_BUILD_HEIGHT;
+            }
 
-    }
-  </script>
+            masterGroup.traverse((child) => {
+                if (child instanceof THREE.LineSegments) {
+                    child.material.uniforms.uBuildY.value = buildProgress;
+                    child.material.uniforms.uTime.value = time;
+                    
+                    if(child.userData.rotSpeed) {
+                        child.rotation.z += child.userData.rotSpeed;
+                    }
+                }
+            });
 
+            // Permanent rotation of the composed system
+            masterGroup.rotation.y += 0.004;
+
+            // Camera Motion (Subtle breathing orbit)
+            const camOrbit = time * 0.1;
+            camera.position.x = Math.cos(camOrbit) * 45;
+            camera.position.z = Math.sin(camOrbit) * 45;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        init();
+    </script>
 </body>
 </html>

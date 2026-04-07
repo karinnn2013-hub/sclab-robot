@@ -93,6 +93,7 @@
 
             <section id="scroll-section">
 
+                <div id="title-trigger"></div>
                 <div class="hero-title">
                     <img src="./assets/title-main.svg" class="title-main">
                     <img src="./assets/title-maincn.svg" class="title-maincn">
@@ -147,11 +148,15 @@
     
     
              <section class="feature-section2 page2" id="nextSection">
+
+                <div class="card-overlay overlay" aria-hidden="true"></div>
     
                 <div class="grid">
               
                   <!-- 小卡片 左上 -->
-                  <div class="card card-1 card-reveal">
+                  <div class="card card-1 card-reveal" data-panel="panel-1">
+
+                    <button class="card-back-btn" type="button" aria-label="Back">Back</button>
     
                     <span class="icon">
                         <div class="img-wrapper">
@@ -167,10 +172,15 @@
                       <div class="bottom">
                         <img src="./assets/textblock1.2.svg" class="textblock">
                       </div>
+
+                      <div class="card-expanded" aria-hidden="true">
+                        <div class="card-expanded-placeholder"></div>
+                      </div>
                   </div>
               
                   <!-- 小卡片 中上 -->
-                  <div class="card card-2 card-reveal">
+                  <div class="card card-2 card-reveal"data-panel="panel-2">
+                    <button class="card-back-btn" type="button" aria-label="Back">Back</button>
                     <span class="icon">
                         <div class="img-wrapper">
                             <img src="./assets/icon1.png" class="ui">
@@ -187,11 +197,17 @@
                       <div class="bottom">
                         <img src="./assets/textblock2.svg" class="textblock">
                       </div>
+
+                      <div class="card-expanded" aria-hidden="true">
+                        <div class="card-expanded-placeholder"></div>
+                      </div>
     
                   </div>
               
                   <!-- 大卡片 右中 -->
-                  <div class="card card-3 reveal card-reveal">
+                  <div class="card card-3 reveal card-reveal" data-panel="panel-3">
+
+                    <button class="card-back-btn" type="button" aria-label="Back">Back</button>
     
                     <video class="card-video" autoplay muted loop playsinline>
                         <source src="./assets/scenario.mp4" type="video/mp4">
@@ -205,12 +221,18 @@
                       <div class="bottom">
                         <img src="./assets/textblock3.svg" class="textblock">
                       </div>
-    
+
+                      <div class="card-expanded" aria-hidden="true">
+                        <div class="card-expanded-placeholder"></div>
+                      </div>
+
                       
                   </div>
               
                   <!-- 小卡片 左下 -->
-                  <div class="card card-4 card-reveal" href="">
+                  <div class="card card-4 card-reveal" href=""data-panel="panel-4">
+
+                    <button class="card-back-btn" type="button" aria-label="Back">Back</button>
     
                     <span class="icon">
                         <div class="img-wrapper">
@@ -227,10 +249,115 @@
                       <div class="bottom">
                         <img src="./assets/textblock4.svg" class="textblock">
                       </div>
+
+                      <div class="card-expanded" aria-hidden="true">
+                        <div class="card-expanded-placeholder"></div>
+                      </div>
                     
                   </div>
               
                 </div>
+                
+                
+                <div class="feature-panel" aria-hidden="true">
+                  <div class="panel-content" data-panel-content="panel-1">
+                    <div class="panel-row">
+                      <div class="panel-media"></div>
+                      <div class="panel-text">
+                        <div class="panel-text-top">
+                          <div class="panel-header">
+                            <div class="title-left">
+                              <h2 class="cn-title">智能监测</h2>
+                            </div>
+                            <div class="title-right">
+                              <h1 class="en-title">SURFACE MONITORING</h1>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-text-bottom">
+                          <div class="panel-desc">
+                            <h3 class="cn-desc">持续监测光伏表面状态</h3>
+                            <h4 class="en-desc">Continuous surface condition monitoring</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel-content" data-panel-content="panel-2">
+                    <div class="panel-row reverse">
+                      <div class="panel-media"></div>
+                      <div class="panel-text">
+                        <div class="panel-text-top">
+                          <div class="panel-header">
+                            <div class="title-left">
+                              <h2 class="cn-title">状态识别</h2>
+                            </div>
+                            <div class="title-right">
+                              <h1 class="en-title">FAULT DETECTION</h1>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-text-bottom">
+                          <div class="panel-desc">
+                            <h3 class="cn-desc">实现异常状态的早期识别与诊断</h3>
+                            <h4 class="en-desc">Early-stage anomaly detection and diagnostics</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel-content" data-panel-content="panel-3">
+                    <div class="panel-row">
+                      <div class="panel-media"></div>
+                      <div class="panel-text">
+                        <div class="panel-text-top">
+                          <div class="panel-header">
+                            <div class="title-left">
+                              <h2 class="cn-title">应用场景</h2>
+                            </div>
+                            <div class="title-right">
+                              <h1 class="en-title">APPLICATION SCENARIO</h1>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-text-bottom">
+                          <div class="panel-desc">
+                            <h3 class="cn-desc">基于性能数据的系统优化能力</h3>
+                            <h4 class="en-desc">Performance-driven system optimization</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel-content" data-panel-content="panel-4">
+                    <div class="panel-row reverse">
+                      <div class="panel-media"></div>
+                      <div class="panel-text">
+                        <div class="panel-text-top">
+                          <div class="panel-header">
+                            <div class="title-left">
+                              <h2 class="cn-title">运行机制</h2>
+                            </div>
+                            <div class="title-right">
+                              <h1 class="en-title">AUTONOMOUS OPERATION</h1>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel-text-bottom">
+                          <div class="panel-desc">
+                            <h3 class="cn-desc">在最少人工干预下完成自主巡检</h3>
+                            <h4 class="en-desc">Autonomous inspection with minimal human intervention</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="feature-panel-close back-btn" type="button" aria-label="Back">Back</button>
+                </div>
+
+                
+
+        
     
                 <!-- 🔥 glow 定义（如果没有的话） -->
              

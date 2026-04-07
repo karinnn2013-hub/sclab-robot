@@ -424,3 +424,208 @@ function animateDot(path, dot) {
 }
 
 
+const featureSection = document.querySelector('.feature-section2');
+
+if (featureSection) {
+  const cards2 = featureSection.querySelectorAll('.card');
+  const overlay = featureSection.querySelector('.card-overlay');
+  const panel = featureSection.querySelector('.feature-panel');
+  const closeButton = panel ? panel.querySelector('.feature-panel-close') : null;
+  const panelContents = panel ? panel.querySelectorAll('.panel-content') : [];
+  const panelVideoSource = './assets/feature-panel-left.mov';
+  let activeCard = null;
+  let suppressClickUntil = 0;
+
+  function createPanelVideo() {
+    const video = document.createElement('video');
+
+    video.className = 'panel-video';
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.preload = 'auto';
+    video.playsInline = true;
+    video.src = panelVideoSource;
+    video.setAttribute('playsinline', '');
+    video.setAttribute('aria-label', 'Panel preview video');
+
+    return video;
+  }
+
+  function clearPanelContent() {
+    panelContents.forEach(content => {
+      const media = content.querySelector('.panel-media');
+
+      if (!media) {
+        return;
+      }
+
+      media.querySelectorAll('video').forEach(video => {
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+      });
+
+      media.replaceChildren();
+      content.classList.remove('active');
+    });
+  }
+
+  function getPanelContent(panelName) {
+    if (!panelName) {
+      return null;
+    }
+
+    return panel.querySelector(`[data-panel-content="${panelName}"]`);
+  }
+
+  function openPanel(card) {
+    if (!panel || !overlay) {
+      return;
+    }
+
+    activeCard = card;
+    panel.dataset.sourceCard = card.dataset.panel || '';
+
+    clearPanelContent();
+
+    const activeContent = getPanelContent(card.dataset.panel);
+    const panelMedia = activeContent ? activeContent.querySelector('.panel-media') : null;
+
+    if (activeContent) {
+      activeContent.classList.add('active');
+    }
+
+    if (panelMedia) {
+      panelMedia.appendChild(createPanelVideo());
+    }
+
+    panel.classList.add('active');
+    panel.setAttribute('aria-hidden', 'false');
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+  }
+
+  function closePanel() {
+    if (!panel || !overlay) {
+      return;
+    }
+
+    activeCard = null;
+    panel.classList.remove('active');
+    panel.setAttribute('aria-hidden', 'true');
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    delete panel.dataset.sourceCard;
+    clearPanelContent();
+  }
+
+  function handleCardActivation(card, event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.target.closest('.card-back-btn')) {
+      return;
+    }
+
+    if (card === activeCard && panel && panel.classList.contains('active')) {
+      return;
+    }
+
+    openPanel(card);
+  }
+
+  cards2.forEach(card => {
+    card.addEventListener('pointerup', event => {
+      if (event.pointerType === 'mouse') {
+        return;
+      }
+
+      suppressClickUntil = Date.now() + 500;
+      handleCardActivation(card, event);
+    });
+
+    card.addEventListener('click', event => {
+      if (Date.now() < suppressClickUntil) {
+        return;
+      }
+
+      handleCardActivation(card, event);
+    });
+  });
+
+  if (closeButton) {
+    closeButton.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      closePanel();
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', () => {
+      closePanel();
+    });
+  }
+
+  window.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closePanel();
+    }
+  });
+}
+
+
+const cursor = document.querySelector('.custom-cursor');
+
+// 👉 禁用 mobile
+function isMobile() {
+  return window.innerWidth < 768;
+}
+
+if (!isMobile()) {
+
+  // =========================
+  // 跟随鼠标（smooth）
+  // =========================
+  let mouseX = 0;
+  let mouseY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function animate() {
+    currentX += (mouseX - currentX) * 0.4;
+    currentY += (mouseY - currentY) * 0.4;
+
+    cursor.style.transform = `translate(${currentX}px, ${currentY}px)`;
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+
+  // =========================
+  // hover 放大
+  // =========================
+  const hoverTargets = document.querySelectorAll('a, button, .card');
+
+  hoverTargets.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.classList.add('active');
+    });
+
+    el.addEventListener('mouseleave', () => {
+      cursor.classList.remove('active');
+    });
+  });
+
+} else {
+  // 👉 mobile 直接隐藏
+  cursor.style.display = "none";
+}
