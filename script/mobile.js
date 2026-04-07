@@ -201,6 +201,11 @@ if (featureSection) {
   }
 
   cards.forEach(card => {
+    card.addEventListener('touchend', event => {
+      suppressClickUntil = Date.now() + 500;
+      handleCardActivation(card, event);
+    });
+
     card.addEventListener('pointerup', event => {
       if (event.pointerType === 'mouse') {
         return;
