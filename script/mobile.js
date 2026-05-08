@@ -103,8 +103,10 @@ if (featureSection) {
   const closeButton = panel ? panel.querySelector('.feature-panel-close') : null;
   const panelContents = panel ? panel.querySelectorAll('.panel-content') : [];
   const panelVideoSource = './assets/feature-panel-left.mov';
+  const PANEL_CLOSE_DELAY = 220;
   let activeCard = null;
   let suppressClickUntil = 0;
+  let closePanelTimer = null;
 
   function createPanelVideo() {
     const video = document.createElement('video');
@@ -153,7 +155,13 @@ if (featureSection) {
       return;
     }
 
+    if (closePanelTimer) {
+      clearTimeout(closePanelTimer);
+      closePanelTimer = null;
+    }
+
     activeCard = card;
+    panel.classList.remove('closing');
     clearPanelContent();
 
     const activeContent = getPanelContent(card.dataset.panel);
@@ -177,12 +185,21 @@ if (featureSection) {
       return;
     }
 
+    if (!panel.classList.contains('active') || panel.classList.contains('closing')) {
+      return;
+    }
+
     activeCard = null;
-    panel.classList.remove('active');
-    panel.setAttribute('aria-hidden', 'true');
-    overlay.classList.remove('active');
-    overlay.setAttribute('aria-hidden', 'true');
-    clearPanelContent();
+    panel.classList.add('closing');
+
+    closePanelTimer = window.setTimeout(() => {
+      panel.classList.remove('active', 'closing');
+      panel.setAttribute('aria-hidden', 'true');
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+      clearPanelContent();
+      closePanelTimer = null;
+    }, PANEL_CLOSE_DELAY);
   }
 
   function handleCardActivation(card, event) {
